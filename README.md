@@ -15,3 +15,35 @@ Quick start
    - python3 tools/validate.py
 3) Load to GraphDB (env GRAPHDB_URL, REPO_ID)
    - ./graphdb/load.sh build/lemon-kg.ttl
+
+## Using bundled cc-sdd (local, no upstream changes)
+
+Prereqs: Node 18+
+
+```bash
+# Run the vendored CLI in this repo only
+./tools/vendor/cc-sdd/dist/cli.js \
+  --agent cursor \
+  --profile minimal \
+  --yes \
+  --overwrite skip \
+  --backup="/tmp/cc-sdd-backup"
+```
+
+Outputs here (safe):
+- .cursor/commands/kiro/*
+- .kiro/settings/*
+- AGENTS.md
+
+Update the vendor snapshot later (optional):
+
+```bash
+# Refresh from your local cc-sdd clone (keeps upstream untouched)
+rsync -a /Volumes/lemon/cursor/cc-sdd/tools/cc-sdd/dist/ tools/vendor/cc-sdd/dist/
+rsync -a /Volumes/lemon/cursor/cc-sdd/tools/cc-sdd/templates/ tools/vendor/cc-sdd/templates/
+```
+
+Guardrails:
+- Do not modify upstream cc-sdd here.
+- Commit the vendored tree if you refresh it, so CI is reproducible.
+
