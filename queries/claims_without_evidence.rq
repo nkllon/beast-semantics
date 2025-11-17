@@ -1,0 +1,6 @@
+PREFIX lemon: <https://kg.lemon.ai/>
+SELECT ?claim
+WHERE {
+  ?claim a lemon:Claim .
+  FILTER NOT EXISTS { ?evidence a lemon:Evidence ; lemon:supports ?claim }
+}

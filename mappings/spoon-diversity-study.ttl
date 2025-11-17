@@ -1,0 +1,15 @@
+@prefix lemon: <https://kg.lemon.ai/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# Bind Spoon Diversity Study artifacts
+<file:///Volumes/lemon/cursor/spoon-diversity-study/spoon_diversity_study_paper_v0.3.md> rdfs:seeAlso <file:///Volumes/lemon/cursor/spoon-diversity-study/spore_SpoonDiversityOntology_v0.4.ttl> .
+
+# Declare study paper and ontology as evidence/entities
+<file:///Volumes/lemon/cursor/spoon-diversity-study/spore_SpoonDiversityOntology_v0.4.ttl> a lemon:Evidence .
+<file:///Volumes/lemon/cursor/spoon-diversity-study/README_SpoonDiversityStudy_v0.3.md> a lemon:Evidence .
+
+# Placeholder diversity index instance computed over a hypothetical set
+lemon:DiversityIndex_Spoon_v04 a lemon:DiversityIndex ;
+  rdfs:label "Spoon Diversity Index v0.4" ;
+  lemon:computedOver <https://kg.lemon.ai/perspective-set/spoon_v04> ;
+  rdfs:seeAlso <file:///Volumes/lemon/cursor/spoon-diversity-study/spoon_spore_registry_v0.3.ttl> .

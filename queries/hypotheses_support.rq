@@ -1,0 +1,9 @@
+PREFIX lemon: <https://kg.lemon.ai/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+SELECT ?hypothesis (COUNT(?evidence) AS ?evidenceCount)
+WHERE {
+  ?hypothesis a lemon:Hypothesis .
+  OPTIONAL { ?evidence a lemon:Evidence ; lemon:supports ?claim . ?claim a lemon:Claim ; prov:wasDerivedFrom ?hypothesis }
+}
+GROUP BY ?hypothesis
+ORDER BY DESC(?evidenceCount)

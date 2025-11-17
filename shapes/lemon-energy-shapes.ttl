@@ -1,0 +1,11 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix lemon: <https://kg.lemon.ai/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+lemon-sh:EnergyFlowShape a sh:NodeShape ;
+  sh:targetClass lemon:EnergyFlow ;
+  sh:property [ sh:path lemon:from ; sh:minCount 1 ] ;
+  sh:property [ sh:path lemon:to ; sh:minCount 1 ] ;
+  sh:property [ sh:path lemon:followsGradientOf ; sh:minCount 1 ] ;
+  sh:property [ sh:path lemon:flowAmount ; sh:datatype xsd:decimal ; sh:minInclusive 0 ; sh:minCount 1 ] ;
+  sh:property [ sh:path lemon:unit ; sh:datatype xsd:string ; sh:minCount 1 ] .

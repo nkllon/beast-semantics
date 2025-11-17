@@ -1,0 +1,11 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix lemon: <https://kg.lemon.ai/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+lemon-sh:MultiPerspectiveAgentShape a sh:NodeShape ;
+  sh:targetClass lemon:MultiPerspectiveAgent ;
+  sh:property [ sh:path lemon:hasPerspective ; sh:minCount 2 ] .
+
+lemon-sh:EvidenceConfidenceShape a sh:NodeShape ;
+  sh:targetClass lemon:Evidence ;
+  sh:property [ sh:path lemon:confidence ; sh:datatype xsd:decimal ; sh:minInclusive 0 ; sh:maxInclusive 1 ; sh:minCount 1 ] .

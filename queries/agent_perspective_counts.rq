@@ -1,0 +1,7 @@
+PREFIX lemon: <https://kg.lemon.ai/>
+SELECT ?agent (COUNT(?p) AS ?perspectives)
+WHERE {
+  ?agent a lemon:Agent ; lemon:hasPerspective ?p .
+}
+GROUP BY ?agent
+ORDER BY DESC(?perspectives)

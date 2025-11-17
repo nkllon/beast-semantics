@@ -1,0 +1,7 @@
+PREFIX lemon: <https://kg.lemon.ai/>
+SELECT ?claim ?evidence ?support
+WHERE {
+  ?evidence a lemon:Evidence ;
+            lemon:supports ?claim .
+  BIND("supports" AS ?support)
+}

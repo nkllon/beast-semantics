@@ -1,0 +1,19 @@
+@prefix lemon: <https://kg.lemon.ai/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix schema: <https://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+[] a owl:Ontology ;
+   dcterms:title "Lemon Alignment Module" ;
+   dcterms:description "Lightweight alignments to PROV-O and DCAT." ;
+   owl:versionInfo "0.1.0" .
+
+lemon:Activity rdfs:subClassOf prov:Activity .
+lemon:Dataset rdfs:subClassOf dcat:Dataset .
+lemon:usesDataset rdfs:subPropertyOf prov:used .

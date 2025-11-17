@@ -1,0 +1,8 @@
+# Finds MultiPerspectiveAgents with < 2 perspectives (shape enforces >=2)
+PREFIX lemon: <https://kg.lemon.ai/>
+SELECT ?agent (COUNT(?p) AS ?num)
+WHERE {
+  ?agent a lemon:MultiPerspectiveAgent ; lemon:hasPerspective ?p .
+}
+GROUP BY ?agent
+HAVING (COUNT(?p) < 2)

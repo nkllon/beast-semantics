@@ -1,0 +1,30 @@
+@prefix lemon: <https://kg.lemon.ai/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+[] a owl:Ontology ;
+   dcterms:title "Lemon Context/RAG Module" ;
+   dcterms:description "Documents, chunks, embeddings, retrieval events, and answer metrics." ;
+   owl:versionInfo "0.1.0" .
+
+# Classes
+lemon:Document a owl:Class ; rdfs:label "Document" ; rdfs:subClassOf prov:Entity .
+lemon:Chunk a owl:Class ; rdfs:label "Chunk" ; rdfs:subClassOf prov:Entity .
+lemon:Embedding a owl:Class ; rdfs:label "Embedding" ; rdfs:subClassOf prov:Entity .
+lemon:RetrievalEvent a owl:Class ; rdfs:label "Retrieval Event" ; rdfs:subClassOf prov:Activity .
+lemon:Answer a owl:Class ; rdfs:label "Answer" ; rdfs:subClassOf prov:Entity .
+
+# Object properties
+lemon:hasPart a owl:ObjectProperty ; rdfs:domain lemon:Document ; rdfs:range lemon:Chunk ; rdfs:label "has part" .
+lemon:hasEmbedding a owl:ObjectProperty ; rdfs:domain lemon:Chunk ; rdfs:range lemon:Embedding ; rdfs:label "has embedding" .
+lemon:groundedIn a owl:ObjectProperty ; rdfs:domain lemon:Answer ; rdfs:range lemon:Chunk ; rdfs:label "grounded in" .
+lemon:retrieved a owl:ObjectProperty ; rdfs:domain lemon:RetrievalEvent ; rdfs:range lemon:Chunk ; rdfs:label "retrieved" .
+
+# Data properties
+lemon:text a owl:DatatypeProperty ; rdfs:domain lemon:Chunk ; rdfs:range xsd:string ; rdfs:label "text" .
+lemon:vector a owl:DatatypeProperty ; rdfs:domain lemon:Embedding ; rdfs:range xsd:string ; rdfs:label "vector" .
+lemon:relevanceScore a owl:DatatypeProperty ; rdfs:domain lemon:Answer ; rdfs:range xsd:decimal ; rdfs:label "relevance score" .
+lemon:faithfulnessScore a owl:DatatypeProperty ; rdfs:domain lemon:Answer ; rdfs:range xsd:decimal ; rdfs:label "faithfulness score" .

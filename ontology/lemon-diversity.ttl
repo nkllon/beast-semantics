@@ -1,0 +1,27 @@
+@prefix lemon: <https://kg.lemon.ai/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+[] a owl:Ontology ;
+   dcterms:title "Lemon Diversity Module" ;
+   dcterms:description "Perspective diversity model, indices, coverage, novelty, sets." ;
+   owl:versionInfo "0.1.0" .
+
+# Classes
+lemon:DiversityIndex a owl:Class ; rdfs:subClassOf lemon:Metric ; rdfs:label "Diversity Index" .
+lemon:PerspectiveSet a owl:Class ; rdfs:label "Perspective Set" .
+lemon:Coverage a owl:Class ; rdfs:subClassOf lemon:Metric ; rdfs:label "Coverage" .
+lemon:Novelty a owl:Class ; rdfs:subClassOf lemon:Metric ; rdfs:label "Novelty" .
+
+# Properties
+lemon:computedOver a owl:ObjectProperty ; rdfs:domain lemon:Metric ; rdfs:range lemon:PerspectiveSet ; rdfs:label "computed over" .
+lemon:hasMember a owl:ObjectProperty ; rdfs:domain lemon:PerspectiveSet ; rdfs:range lemon:Perspective ; rdfs:label "has member" .
+lemon:hasDimension a owl:ObjectProperty ; rdfs:domain lemon:Metric ; rdfs:range skos:Concept ; rdfs:label "has dimension" .
+lemon:indexValue a owl:DatatypeProperty ; rdfs:domain lemon:DiversityIndex ; rdfs:range xsd:decimal ; rdfs:label "index value" .
+lemon:coverageScore a owl:DatatypeProperty ; rdfs:domain lemon:Coverage ; rdfs:range xsd:decimal ; rdfs:label "coverage score" .
+lemon:noveltyScore a owl:DatatypeProperty ; rdfs:domain lemon:Novelty ; rdfs:range xsd:decimal ; rdfs:label "novelty score" .

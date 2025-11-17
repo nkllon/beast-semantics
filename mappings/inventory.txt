@@ -1,0 +1,7 @@
+# Inventory (key artifacts)
+/Volumes/lemon/cursor/composable-ai-advisors/.mcp/domain-models/*
+/Volumes/lemon/cursor/composable-ai-advisors/guidance.ttl
+/Volumes/lemon/cursor/spoon-diversity-study/spore_SpoonDiversityOntology_v0.4.ttl
+/Volumes/lemon/cursor/spoon-diversity-study/spoon_diversity_study_paper_v0.3.md
+/Volumes/lemon/cursor/lemonaide/nkllon/beast-glue/graph-bridge/mappings/mapping.ttl
+/Volumes/lemon/cursor/lemonaide/nkllon/beast-glue/monitoring/prometheus/prometheus.yml

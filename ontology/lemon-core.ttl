@@ -1,0 +1,47 @@
+@prefix lemon: <https://kg.lemon.ai/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix schema: <https://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+[] a owl:Ontology ;
+   dcterms:title "Lemon Core Ontology" ;
+   dcterms:description "Core classes and properties for agents, perspectives, claims, evidence, datasets, metrics, and activities." ;
+   owl:versionInfo "0.1.0" .
+
+# Classes
+lemon:Agent a owl:Class ; rdfs:label "Agent" ; rdfs:comment "Actor that can perform activities and hold perspectives." .
+lemon:MultiPerspectiveAgent a owl:Class ; rdfs:subClassOf lemon:Agent ; rdfs:label "Multi-Perspective Agent" .
+lemon:Role a owl:Class ; rdfs:label "Role" .
+lemon:Capability a owl:Class ; rdfs:label "Capability" .
+lemon:Perspective a owl:Class ; rdfs:label "Perspective" ; rdfs:comment "A coherent viewpoint or lens used by an agent." .
+lemon:Observation a owl:Class ; rdfs:label "Observation" .
+lemon:Evidence a owl:Class ; rdfs:label "Evidence" ; rdfs:subClassOf prov:Entity .
+lemon:Claim a owl:Class ; rdfs:label "Claim" ; rdfs:subClassOf prov:Entity .
+lemon:Hypothesis a owl:Class ; rdfs:label "Hypothesis" ; rdfs:subClassOf prov:Entity .
+lemon:Metric a owl:Class ; rdfs:label "Metric" ; rdfs:subClassOf prov:Entity .
+lemon:Dataset a owl:Class ; rdfs:label "Dataset" ; rdfs:subClassOf dcat:Dataset .
+lemon:Activity a owl:Class ; rdfs:label "Activity" ; rdfs:subClassOf prov:Activity .
+lemon:Task a owl:Class ; rdfs:label "Task" ; rdfs:subClassOf lemon:Activity .
+
+# Properties (object)
+lemon:hasPerspective a owl:ObjectProperty ; rdfs:domain lemon:Agent ; rdfs:range lemon:Perspective ; rdfs:label "has perspective" .
+lemon:participatesIn a owl:ObjectProperty ; rdfs:domain lemon:Agent ; rdfs:range lemon:Activity ; rdfs:label "participates in" .
+lemon:supports a owl:ObjectProperty ; rdfs:domain lemon:Evidence ; rdfs:range lemon:Claim ; rdfs:label "supports" .
+lemon:refutes a owl:ObjectProperty ; rdfs:domain lemon:Evidence ; rdfs:range lemon:Claim ; rdfs:label "refutes" .
+lemon:usesDataset a owl:ObjectProperty ; rdfs:domain lemon:Activity ; rdfs:range lemon:Dataset ; rdfs:subPropertyOf prov:used ; rdfs:label "uses dataset" .
+lemon:producedClaim a owl:ObjectProperty ; rdfs:domain lemon:Activity ; rdfs:range lemon:Claim ; rdfs:label "produced claim" .
+lemon:producedEvidence a owl:ObjectProperty ; rdfs:domain lemon:Activity ; rdfs:range lemon:Evidence ; rdfs:label "produced evidence" .
+
+# Properties (data)
+lemon:confidence a owl:DatatypeProperty ; rdfs:domain lemon:Evidence ; rdfs:range xsd:decimal ; rdfs:label "confidence" .
+lemon:uncertaintyModel a owl:DatatypeProperty ; rdfs:domain lemon:Evidence ; rdfs:range xsd:string ; rdfs:label "uncertainty model" .
+lemon:createdAt a owl:DatatypeProperty ; rdfs:domain prov:Entity ; rdfs:range xsd:dateTime ; rdfs:label "created at" .
+
+# Additional property for hypotheses
+lemon:claims a owl:DatatypeProperty ; rdfs:domain lemon:Hypothesis ; rdfs:range xsd:string ; rdfs:label "claims" .

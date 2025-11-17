@@ -1,0 +1,7 @@
+PREFIX lemon: <https://kg.lemon.ai/>
+SELECT ?flow ?externality
+WHERE {
+  ?flow a lemon:EnergyFlow ; lemon:externality ?externality .
+  FILTER(?externality > 0.5)
+}
+ORDER BY DESC(?externality)

@@ -1,0 +1,59 @@
+@prefix lemon: <https://kg.lemon.ai/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+lemon:A1_DiversityFreeLunch a lemon:Hypothesis ;
+  dcterms:title "Diversity is the only free lunch" ;
+  lemon:claims "Greater perspective diversity tends to improve outcome quality across task classes" ;
+  prov:wasGeneratedBy lemon:Study_Diversity_2025 .
+
+lemon:A2_EnergyGradient a lemon:Hypothesis ;
+  dcterms:title "Follow the money (energy gradient)" ;
+  lemon:claims "Economic and behavioral flows follow energy/resource gradients under incentives and constraints" ;
+  prov:wasGeneratedBy lemon:Study_Energy_2025 .
+
+# Example placeholder studies
+lemon:Study_Diversity_2025 a prov:Activity .
+lemon:Study_Energy_2025 a prov:Activity .
+
+# Additional research memes as hypotheses
+@prefix lemon: <https://kg.lemon.ai/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+lemon:A3_RequisiteVariety a lemon:Hypothesis ;
+  dcterms:title "Requisite variety (Ashby)" ;
+  lemon:claims "Controller performance is bounded by environmental variety; diversity is required to match variety" .
+
+lemon:A4_Goodhart a lemon:Hypothesis ;
+  dcterms:title "You get what you measure (Goodhart's Law)" ;
+  lemon:claims "When a metric becomes a target, it ceases to be a good metric" .
+
+lemon:A5_ExplorationExploitation a lemon:Hypothesis ;
+  dcterms:title "Exploration–exploitation balance" ;
+  lemon:claims "Sustained performance requires balancing exploration with exploitation; insufficient exploration reduces diversity and novelty" .
+
+lemon:A6_ContextIsKing a lemon:Hypothesis ;
+  dcterms:title "Context is king" ;
+  lemon:claims "Answer quality increases with relevant, faithful grounding context up to model capacity limits" .
+
+lemon:A7_CausalGrounding a lemon:Hypothesis ;
+  dcterms:title "Causal beats correlational" ;
+  lemon:claims "Causally grounded features generalize better than correlational heuristics, especially under distribution shift" .
+
+lemon:A8_PathDependence a lemon:Hypothesis ;
+  dcterms:title "Path dependence and hysteresis" ;
+  lemon:claims "Early design choices create attractors; switching costs and institutional inertia cause hysteresis" .
+
+lemon:A9_SemanticLayerFirst a lemon:Hypothesis ;
+  dcterms:title "Semantics precede scale" ;
+  lemon:claims "A governed semantic layer is prerequisite for safe, scalable RAG and agentic systems" .
+
+lemon:A10_ConservationOfComplexity a lemon:Hypothesis ;
+  dcterms:title "Conservation of complexity" ;
+  lemon:claims "Complexity is conserved across layers; removing complexity in one place displaces it elsewhere" .
+
+lemon:A11_ConvergentStacksRome a lemon:Hypothesis ;
+  dcterms:title "All roads lead to Rome (convergent stacks)" ;
+  lemon:claims "Ecosystems converge on common coordination layers (protocols, semantics); fragmentation resolves toward shared standards" .

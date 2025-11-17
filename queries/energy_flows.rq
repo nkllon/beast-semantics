@@ -1,0 +1,9 @@
+PREFIX lemon: <https://kg.lemon.ai/>
+SELECT ?flow ?from ?to ?amount ?gradient
+WHERE {
+  ?flow a lemon:EnergyFlow ;
+        lemon:from ?from ;
+        lemon:to ?to ;
+        lemon:flowAmount ?amount ;
+        lemon:followsGradientOf ?gradient .
+}
