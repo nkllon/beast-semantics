@@ -1,30 +1,30 @@
-@prefix lemon: <https://kg.lemon.ai/> .
+@prefix words: <https://ns.nkllon.com/words/v1/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
 
 # Perspectives derived from domain models in CAA
-lemon:Perspective_Compliance a lemon:Perspective ;
+words:Perspective_Compliance a words:Perspective ;
   rdfs:label "Compliance" ;
   rdfs:seeAlso <file:///Volumes/lemon/cursor/composable-ai-advisors/.mcp/domain-models/compliance-officer.ttl> .
 
-lemon:Perspective_Legal a lemon:Perspective ;
+words:Perspective_Legal a words:Perspective ;
   rdfs:label "Legal" ;
   rdfs:seeAlso <file:///Volumes/lemon/cursor/composable-ai-advisors/.mcp/domain-models/legal-docs.md> .
 
-lemon:Perspective_Research a lemon:Perspective ;
+words:Perspective_Research a words:Perspective ;
   rdfs:label "Research Analyst" ;
   rdfs:seeAlso <file:///Volumes/lemon/cursor/composable-ai-advisors/.mcp/domain-models/research-analyst.ttl> .
 
-lemon:Perspective_Architecture a lemon:Perspective ;
+words:Perspective_Architecture a words:Perspective ;
   rdfs:label "Systems Architecture" ;
   rdfs:seeAlso <file:///Volumes/lemon/cursor/composable-ai-advisors/.mcp/domain-models/systems-architect.ttl> .
 
 # A Multi-Perspective Agent representing the CAA orchestrator
-lemon:Agent_CAA_Orchestrator a lemon:MultiPerspectiveAgent ;
+words:Agent_CAA_Orchestrator a words:MultiPerspectiveAgent ;
   rdfs:label "CAA Orchestrator" ;
-  lemon:hasPerspective lemon:Perspective_Compliance , lemon:Perspective_Legal , lemon:Perspective_Research , lemon:Perspective_Architecture ;
+  words:hasPerspective words:Perspective_Compliance , words:Perspective_Legal , words:Perspective_Research , words:Perspective_Architecture ;
   rdfs:seeAlso <file:///Volumes/lemon/cursor/composable-ai-advisors/README.md> .
 
 # Link guidance/constraints artifacts as evidence entities
-<file:///Volumes/lemon/cursor/composable-ai-advisors/guidance.ttl> a lemon:Evidence .
-<file:///Volumes/lemon/cursor/composable-ai-advisors/.mcp/shapes/domain-model-shapes.ttl> a lemon:Evidence .
+<file:///Volumes/lemon/cursor/composable-ai-advisors/guidance.ttl> a words:Evidence .
+<file:///Volumes/lemon/cursor/composable-ai-advisors/.mcp/shapes/domain-model-shapes.ttl> a words:Evidence .

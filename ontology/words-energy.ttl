@@ -1,0 +1,35 @@
+@prefix words: <https://ns.nkllon.com/words/v1/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+[] a owl:Ontology ;
+   dcterms:title "Lemon Incentives & Energy Module" ;
+   dcterms:description "Incentive structures, stakeholders, energy/resource flows and gradients." ;
+   owl:versionInfo "0.1.0" .
+
+# Classes
+words:IncentiveStructure a owl:Class ; rdfs:label "Incentive Structure" .
+words:Stakeholder a owl:Class ; rdfs:label "Stakeholder" ; rdfs:subClassOf words:Agent .
+words:Resource a owl:Class ; rdfs:label "Resource" .
+words:EnergyFlow a owl:Class ; rdfs:label "Energy Flow" ; rdfs:subClassOf prov:Entity .
+words:EnergyGradient a owl:Class ; rdfs:label "Energy Gradient" ; rdfs:subClassOf prov:Entity .
+
+# Object properties
+words:from a owl:ObjectProperty ; rdfs:domain words:EnergyFlow ; rdfs:range words:Stakeholder ; rdfs:label "from" .
+words:to a owl:ObjectProperty ; rdfs:domain words:EnergyFlow ; rdfs:range words:Stakeholder ; rdfs:label "to" .
+words:resource a owl:ObjectProperty ; rdfs:domain words:EnergyFlow ; rdfs:range words:Resource ; rdfs:label "resource" .
+words:followsGradientOf a owl:ObjectProperty ; rdfs:domain words:EnergyFlow ; rdfs:range words:EnergyGradient ; rdfs:label "follows gradient of" .
+words:governedBy a owl:ObjectProperty ; rdfs:domain words:EnergyFlow ; rdfs:range words:IncentiveStructure ; rdfs:label "governed by" .
+
+# Data properties
+words:flowAmount a owl:DatatypeProperty ; rdfs:domain words:EnergyFlow ; rdfs:range xsd:decimal ; rdfs:label "flow amount" .
+words:unit a owl:DatatypeProperty ; rdfs:domain words:EnergyFlow ; rdfs:range xsd:string ; rdfs:label "unit" .
+words:hasCost a owl:DatatypeProperty ; rdfs:domain words:EnergyFlow ; rdfs:range xsd:decimal ; rdfs:label "cost" .
+words:hasBenefit a owl:DatatypeProperty ; rdfs:domain words:EnergyFlow ; rdfs:range xsd:decimal ; rdfs:label "benefit" .
+words:utility a owl:DatatypeProperty ; rdfs:domain words:EnergyFlow ; rdfs:range xsd:decimal ; rdfs:label "utility" .
+words:externality a owl:DatatypeProperty ; rdfs:domain words:EnergyFlow ; rdfs:range xsd:decimal ; rdfs:label "externality" .
+words:occurredAt a owl:DatatypeProperty ; rdfs:domain words:EnergyFlow ; rdfs:range xsd:dateTime ; rdfs:label "occurred at" .

@@ -1,4 +1,4 @@
-PREFIX lemon: <https://kg.lemon.ai/>
+PREFIX lemon: <https://ns.nkllon.com/words/v1/>
 SELECT ?flow ?from ?to ?amount ?gradient
 WHERE {
   ?flow a lemon:EnergyFlow ;

@@ -1,4 +1,4 @@
-PREFIX lemon: <https://kg.lemon.ai/>
+PREFIX lemon: <https://ns.nkllon.com/words/v1/>
 SELECT ?flow ?externality
 WHERE {
   ?flow a lemon:EnergyFlow ; lemon:externality ?externality .

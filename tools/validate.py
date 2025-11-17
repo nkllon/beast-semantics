@@ -5,7 +5,7 @@ from pyshacl import validate
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 SHAPES = ROOT / "shapes"
 BUILD = ROOT / "build"
-DATAFILE = BUILD / "lemon-kg.ttl"
+DATAFILE = BUILD / "words-v1.ttl"
 
 def main() -> None:
     if not DATAFILE.exists():
@@ -23,6 +23,7 @@ def main() -> None:
         advanced=True,
         js=False,
     )
+    pathlib.Path("build/shacl-report.txt").write_text(report_text)
     print(report_text)
     if not conforms:
         raise SystemExit(1)

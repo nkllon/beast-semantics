@@ -1,0 +1,13 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix words: <https://ns.nkllon.com/words/v1/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix words-sh: <https://ns.nkllon.com/words/v1/shapes#> .
+
+words-sh:DiversityIndexShape a sh:NodeShape ;
+  sh:targetClass words:DiversityIndex ;
+  sh:property [ sh:path words:indexValue ; sh:datatype xsd:decimal ; sh:minCount 1 ] ;
+  sh:property [ sh:path words:computedOver ; sh:minCount 1 ] .
+
+words-sh:PerspectiveSetShape a sh:NodeShape ;
+  sh:targetClass words:PerspectiveSet ;
+  sh:property [ sh:path words:hasMember ; sh:minCount 2 ] .

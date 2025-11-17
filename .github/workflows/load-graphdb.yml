@@ -1,0 +1,42 @@
+name: Load GraphDB
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Git ref to checkout
+        required: false
+        default: main
+      graphdb_url:
+        description: GraphDB URL (fallback to secret GRAPHDB_URL)
+        required: false
+      repo_id:
+        description: GraphDB repository ID (fallback to secret REPO_ID)
+        required: false
+jobs:
+  load:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Assemble
+        run: python tools/assemble.py
+      - name: Validate
+        run: python tools/validate.py
+      - name: Load to GraphDB
+        env:
+          GRAPHDB_URL: ${{ inputs.graphdb_url || secrets.GRAPHDB_URL }}
+          REPO_ID: ${{ inputs.repo_id || secrets.REPO_ID }}
+        run: |
+          if [ -z "$GRAPHDB_URL" ] || [ -z "$REPO_ID" ]; then
+            echo "GRAPHDB_URL and REPO_ID must be provided via inputs or secrets" >&2
+            exit 2
+          fi
+          python tools/load_graphdb.py build/words-v1.ttl

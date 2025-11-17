@@ -1,14 +1,14 @@
-@prefix lemon: <https://kg.lemon.ai/> .
+@prefix words: <https://ns.nkllon.com/words/v1/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
 # Observability resources as tokens for flows (illustrative)
-lemon:Resource_CPU a lemon:Resource ; rdfs:label "CPU" .
-lemon:Resource_Memory a lemon:Resource ; rdfs:label "Memory" .
-lemon:Resource_Network a lemon:Resource ; rdfs:label "Network" .
+words:Resource_CPU a words:Resource ; rdfs:label "CPU" .
+words:Resource_Memory a words:Resource ; rdfs:label "Memory" .
+words:Resource_Network a words:Resource ; rdfs:label "Network" .
 
 # Example flow placeholders to be bound from logs (Grafana/Loki/Prometheus)
-lemon:Flow_BeastGlue_CPU a lemon:EnergyFlow ;
-  lemon:resource lemon:Resource_CPU ;
+words:Flow_BeastGlue_CPU a words:EnergyFlow ;
+  words:resource words:Resource_CPU ;
   rdfs:seeAlso <file:///Volumes/lemon/cursor/lemonaide/nkllon/beast-glue/monitoring/prometheus/prometheus.yml> .
 
 # See also graph-bridge mapping for future ETL into KG

@@ -1,0 +1,12 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix words: <https://ns.nkllon.com/words/v1/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix words-sh: <https://ns.nkllon.com/words/v1/shapes#> .
+
+words-sh:MultiPerspectiveAgentShape a sh:NodeShape ;
+  sh:targetClass words:MultiPerspectiveAgent ;
+  sh:property [ sh:path words:hasPerspective ; sh:minCount 2 ] .
+
+words-sh:EvidenceConfidenceShape a sh:NodeShape ;
+  sh:targetClass words:Evidence ;
+  sh:property [ sh:path words:confidence ; sh:datatype xsd:decimal ; sh:minInclusive 0 ; sh:maxInclusive 1 ; sh:minCount 1 ] .

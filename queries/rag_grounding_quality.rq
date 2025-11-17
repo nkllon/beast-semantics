@@ -1,4 +1,4 @@
-PREFIX lemon: <https://kg.lemon.ai/>
+PREFIX lemon: <https://ns.nkllon.com/words/v1/>
 SELECT ?answer ?faith ?relevance
 WHERE {
   ?answer a lemon:Answer ;

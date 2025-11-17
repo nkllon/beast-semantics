@@ -1,0 +1,12 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix words: <https://ns.nkllon.com/words/v1/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix words-sh: <https://ns.nkllon.com/words/v1/shapes#> .
+
+words-sh:EnergyFlowShape a sh:NodeShape ;
+  sh:targetClass words:EnergyFlow ;
+  sh:property [ sh:path words:from ; sh:minCount 1 ] ;
+  sh:property [ sh:path words:to ; sh:minCount 1 ] ;
+  sh:property [ sh:path words:followsGradientOf ; sh:minCount 1 ] ;
+  sh:property [ sh:path words:flowAmount ; sh:datatype xsd:decimal ; sh:minInclusive 0 ; sh:minCount 1 ] ;
+  sh:property [ sh:path words:unit ; sh:datatype xsd:string ; sh:minCount 1 ] .

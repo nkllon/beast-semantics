@@ -1,0 +1,30 @@
+@prefix words: <https://ns.nkllon.com/words/v1/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+[] a owl:Ontology ;
+   dcterms:title "Lemon Context/RAG Module" ;
+   dcterms:description "Documents, chunks, embeddings, retrieval events, and answer metrics." ;
+   owl:versionInfo "0.1.0" .
+
+# Classes
+words:Document a owl:Class ; rdfs:label "Document" ; rdfs:subClassOf prov:Entity .
+words:Chunk a owl:Class ; rdfs:label "Chunk" ; rdfs:subClassOf prov:Entity .
+words:Embedding a owl:Class ; rdfs:label "Embedding" ; rdfs:subClassOf prov:Entity .
+words:RetrievalEvent a owl:Class ; rdfs:label "Retrieval Event" ; rdfs:subClassOf prov:Activity .
+words:Answer a owl:Class ; rdfs:label "Answer" ; rdfs:subClassOf prov:Entity .
+
+# Object properties
+words:hasPart a owl:ObjectProperty ; rdfs:domain words:Document ; rdfs:range words:Chunk ; rdfs:label "has part" .
+words:hasEmbedding a owl:ObjectProperty ; rdfs:domain words:Chunk ; rdfs:range words:Embedding ; rdfs:label "has embedding" .
+words:groundedIn a owl:ObjectProperty ; rdfs:domain words:Answer ; rdfs:range words:Chunk ; rdfs:label "grounded in" .
+words:retrieved a owl:ObjectProperty ; rdfs:domain words:RetrievalEvent ; rdfs:range words:Chunk ; rdfs:label "retrieved" .
+
+# Data properties
+words:text a owl:DatatypeProperty ; rdfs:domain words:Chunk ; rdfs:range xsd:string ; rdfs:label "text" .
+words:vector a owl:DatatypeProperty ; rdfs:domain words:Embedding ; rdfs:range xsd:string ; rdfs:label "vector" .
+words:relevanceScore a owl:DatatypeProperty ; rdfs:domain words:Answer ; rdfs:range xsd:decimal ; rdfs:label "relevance score" .
+words:faithfulnessScore a owl:DatatypeProperty ; rdfs:domain words:Answer ; rdfs:range xsd:decimal ; rdfs:label "faithfulness score" .

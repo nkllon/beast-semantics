@@ -1,4 +1,4 @@
-PREFIX lemon: <https://kg.lemon.ai/>
+PREFIX lemon: <https://ns.nkllon.com/words/v1/>
 PREFIX prov: <http://www.w3.org/ns/prov#>
 SELECT ?hypothesis (COUNT(?evidence) AS ?evidenceCount)
 WHERE {

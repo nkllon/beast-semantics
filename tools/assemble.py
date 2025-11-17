@@ -7,11 +7,11 @@ DATA = ROOT / "data"
 BUILD = ROOT / "build"
 
 MODULES = [
-    "lemon-core.ttl",
-    "lemon-diversity.ttl",
-    "lemon-energy.ttl",
-    "lemon-context.ttl",
-    "lemon-align.ttl",
+    "words-core.ttl",
+    "words-diversity.ttl",
+    "words-energy.ttl",
+    "words-context.ttl",
+    "words-align.ttl",
 ]
 
 def main() -> None:
@@ -21,7 +21,7 @@ def main() -> None:
         g.parse(ONTO / name, format="turtle")
     for ttl in sorted(DATA.glob("*.ttl")):
         g.parse(ttl, format="turtle")
-    out = BUILD / "lemon-kg.ttl"
+    out = BUILD / "words-v1.ttl"
     g.serialize(destination=str(out), format="turtle")
     print(f"Wrote {out}")
 

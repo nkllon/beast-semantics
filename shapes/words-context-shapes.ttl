@@ -1,0 +1,14 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix words: <https://ns.nkllon.com/words/v1/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix words-sh: <https://ns.nkllon.com/words/v1/shapes#> .
+
+words-sh:RetrievalEventShape a sh:NodeShape ;
+  sh:targetClass words:RetrievalEvent ;
+  sh:property [ sh:path words:retrieved ; sh:minCount 1 ] .
+
+words-sh:AnswerShape a sh:NodeShape ;
+  sh:targetClass words:Answer ;
+  sh:property [ sh:path words:faithfulnessScore ; sh:datatype xsd:decimal ; sh:minInclusive 0 ; sh:maxInclusive 1 ; sh:minCount 1 ] ;
+  sh:property [ sh:path words:relevanceScore ; sh:datatype xsd:decimal ; sh:minInclusive 0 ; sh:maxInclusive 1 ; sh:minCount 1 ] ;
+  sh:property [ sh:path words:groundedIn ; sh:minCount 1 ] .
