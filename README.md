@@ -49,6 +49,28 @@ The script checks:
 - Settings structure at `.kiro/settings/`
 - `AGENTS.md` presence
 
+## Release Freeze (Immutable Snapshot)
+
+Create a versioned, immutable snapshot with dual-hash manifests and SBOM:
+
+```bash
+# Freeze snapshot into build/releases/<version>/
+./tools/release-freeze.sh 1.2.3
+
+# Verify snapshot (SHA-256 and MD5)
+./tools/verify-release.sh 1.2.3
+
+# CC-SDD + release verification in one step
+./tools/verify-cc-sdd.sh --release 1.2.3
+```
+
+What it produces:
+- `build/releases/1.2.3/MANIFEST.sha256` (primary)
+- `build/releases/1.2.3/MANIFEST.md5` (compatibility)
+- `build/releases/1.2.3/release.label` (human-friendly label)
+- `build/releases/1.2.3/sbom.cdx.json` (CycloneDX, best-effort)
+- Curated artifacts: CC‑SDD setup plus domain build outputs (`build/*.ttl`, `build/shacl-*.txt`)
+
 Update the vendor snapshot later (optional):
 
 ```bash

@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+RELEASE_VERSION=""
+if [ "${1:-}" = "--release" ] && [ -n "${2:-}" ]; then
+  RELEASE_VERSION="$2"
+fi
+
 error_count=0
 
 fail() {
@@ -79,6 +84,12 @@ if [ "$error_count" -gt 0 ]; then
   echo "== Verification FAILED ($error_count issue(s)) =="
   exit 1
 else
+  if [ -n "$RELEASE_VERSION" ]; then
+    echo "== Running release snapshot verification ($RELEASE_VERSION) =="
+    if ! tools/verify-release.sh "$RELEASE_VERSION"; then
+      exit 1
+    fi
+  fi
   echo "== Verification PASSED =="
   exit 0
 fi
