@@ -1,74 +1,172 @@
 # Design Document
 
 ## Overview 
-Purpose: Ensure this repository has a reproducible, local-first CC-SDD (Kiro) workflow by verifying Node.js prerequisites, running the vendored CLI, and validating generated outputs.
+Purpose: Provide verification tooling and documentation to ensure the CC-SDD (Kiro) setup in this repository is complete, correct, and reproducible.
 Users: Project developers and AI agents using `/kiro/*` commands in Cursor.
-Impact: Establishes a baseline spec-driven workflow without modifying upstream cc-sdd or requiring global installs.
+Impact: Establishes confidence in the spec-driven workflow setup and provides clear procedures for maintenance and troubleshooting.
 
 ### Goals
-- Verify Node 18+ availability
-- Install Kiro commands and settings via vendored CC-SDD CLI
-- Confirm generated commands and settings are present and usable
+- Create automated verification script for CC-SDD installation state
+- Document environment prerequisites and setup procedures
+- Ensure reproducibility of setup across environments
+- Provide clear troubleshooting guidance
 
 ### Non-Goals
 - Modifying upstream cc-sdd
-- Setting up CI pipelines for specs (future work)
-- Implementing additional features beyond setup validation
+- Implementing new CC-SDD features
+- Setting up CI pipelines (future work)
+- Creating custom Kiro commands beyond verification
 
 ## Architecture
 
 ### Existing Architecture Analysis
-- The repo already includes a vendored `cc-sdd` under `tools/vendor/cc-sdd/`.
-- The root `README.md` documents the minimal run command and refresh instructions.
+- **Vendored CLI**: `tools/vendor/cc-sdd/dist/cli.js` already present
+- **Commands**: `.cursor/commands/kiro/*` already installed (11 command files)
+- **Settings**: `.kiro/settings/*` structure already exists (rules and templates)
+- **Documentation**: `README.md` already contains CC-SDD usage section
+- **Guidance**: `AGENTS.md` already provides AI agent steering
+
+### Current State
+The CC-SDD tooling is **already installed and functional**. This spec focuses on:
+1. Verifying the installation is complete
+2. Documenting the setup for reproducibility
+3. Providing maintenance procedures
 
 ### High-Level Architecture
-- Inputs: Local Node runtime (>=18)
-- Process: Execute vendored CLI with safe flags
-- Outputs: `.cursor/commands/kiro/*`, `.kiro/settings/*`, and updated `AGENTS.md`
+```
+Verification Script (tools/verify-cc-sdd.sh)
+  ├─> Check Node.js version (>= 18)
+  ├─> Verify .cursor/commands/kiro/* (11 files)
+  ├─> Verify .kiro/settings/* structure
+  ├─> Verify AGENTS.md exists
+  └─> Report: PASS/FAIL with details
+```
 
 ### Technology Alignment
-- Uses Node runtime already standard for the vendored CLI
-- No new dependencies introduced; operates strictly within repo boundaries
+- Bash script for verification (portable, no new dependencies)
+- Uses existing Node runtime for version check
+- File system checks only (fast, reliable)
 
 ### Key Design Decisions
-- Decision: Use vendored CLI, not global installs
-  - Context: Ensure reproducibility and no external side-effects
-  - Alternatives: Global `npx` install; git submodule
-  - Selected Approach: Vendored `dist/cli.js` executed directly
-  - Rationale: Deterministic, offline-friendly, reproducible in CI
-  - Trade-offs: Must occasionally refresh vendor snapshot
+
+**Decision 1: Verification script over installation script**
+- Context: Tooling already installed; need to validate state
+- Alternatives: Installation script, manual checklist, CI-only checks
+- Selected Approach: Standalone verification script
+- Rationale: Validates current state, useful for troubleshooting, can be run anytime
+- Trade-offs: Doesn't fix issues automatically (by design - keeps it simple)
+
+**Decision 2: Bash script location**
+- Context: Need discoverable, maintainable location
+- Alternatives: `tools/`, `.kiro/`, root directory
+- Selected Approach: `tools/verify-cc-sdd.sh`
+- Rationale: Consistent with existing `tools/` structure (assemble.py, validate.py)
+- Trade-offs: None significant
+
+**Decision 3: Documentation enhancement over new docs**
+- Context: README.md already has CC-SDD section
+- Alternatives: New SETUP.md, inline comments only
+- Selected Approach: Enhance existing README.md section
+- Rationale: Single source of truth, developers already look there
+- Trade-offs: README grows slightly longer
 
 ## System Flows
-1. Check Node version (`node -v`) → must be >= 18
-2. Run vendored CLI with `--overwrite skip --yes` to avoid prompts and protect existing files
-3. Verify presence of `.cursor/commands/kiro/*` and `.kiro/settings/*`
+
+### Verification Flow
+1. **Node Check**: Execute `node -v`, parse version, compare to minimum (18)
+2. **Commands Check**: Verify 11 expected files in `.cursor/commands/kiro/`
+3. **Settings Check**: Verify directory structure in `.kiro/settings/`
+4. **Guidance Check**: Verify `AGENTS.md` exists
+5. **Report**: Output summary (all checks passed / X checks failed)
+
+### Installation Flow (documented, not automated)
+1. Developer reads README.md prerequisites
+2. Developer runs documented CLI command
+3. Developer runs verification script to confirm
+4. If verification fails, developer troubleshoots using output
 
 ## Requirements Traceability
-- R1 Node runtime availability → Version check flow
-- R2 Vendored CC-SDD CLI installation → CLI execution flow
-- R3 Generated outputs present → Post-install verification
+- R1 Environment prerequisites documented → Enhanced README.md section
+- R2 Installation state verified → Verification script checks
+- R3 Setup reproducibility ensured → Documented CLI command and refresh procedure
+- R4 Verification automation available → `tools/verify-cc-sdd.sh` script
 
 ## Components and Interfaces
-### Local Environment
-- Responsibility: Provide Node runtime
-- External: Node.js
 
-### Vendored CLI
-- Responsibility: Generate commands and settings in-repo
-- Input: Flags (`--agent`, `--profile`, `--overwrite`, `--yes`, `--backup`)
-- Output: Files in `.cursor/commands/kiro` and `.kiro/settings`
+### Verification Script (`tools/verify-cc-sdd.sh`)
+- **Responsibility**: Validate CC-SDD installation completeness
+- **Input**: File system state
+- **Output**: Exit code (0=pass, 1=fail) and human-readable report
+- **Dependencies**: bash, node (for version check)
+
+### Documentation (`README.md`)
+- **Responsibility**: Provide setup and maintenance procedures
+- **Sections**: Prerequisites, Installation command, Verification, Refresh procedure
+- **Audience**: Developers setting up or maintaining the repo
+
+### Expected File Structure
+```
+.cursor/commands/kiro/
+  ├─ spec-init.md
+  ├─ spec-requirements.md
+  ├─ spec-design.md
+  ├─ spec-tasks.md
+  ├─ spec-impl.md
+  ├─ spec-status.md
+  ├─ steering.md
+  ├─ steering-custom.md
+  ├─ validate-gap.md
+  ├─ validate-design.md
+  └─ validate-impl.md
+
+.kiro/settings/
+  ├─ rules/
+  └─ templates/
+
+AGENTS.md (root)
+```
 
 ## Data Models
-Not applicable.
+Not applicable (file system checks only).
 
 ## Error Handling
-- Node version too low → fail early with remediation
-- CLI non-zero exit → report error and stop
-- Missing outputs → fail verification with clear messaging
+
+### Node Version Check Failure
+- **Condition**: Node < 18 or not found
+- **Response**: Exit 1, output "Node.js 18+ required. Current: X.Y.Z" or "Node.js not found"
+- **Remediation**: Install/upgrade Node.js
+
+### Missing Commands
+- **Condition**: Expected command files not found
+- **Response**: Exit 1, list missing files
+- **Remediation**: Run installation command from README.md
+
+### Missing Settings
+- **Condition**: Settings structure incomplete
+- **Response**: Exit 1, report missing directories
+- **Remediation**: Run installation command from README.md
+
+### Missing AGENTS.md
+- **Condition**: AGENTS.md not found
+- **Response**: Exit 1, report missing file
+- **Remediation**: Run installation command from README.md
 
 ## Testing Strategy
-- Smoke: Run CLI and assert exit code 0
-- Verification: Existence checks for expected directories and representative files
-- Documentation: Confirm `README.md` section matches actual usage
+
+### Verification Script Testing
+- **Positive case**: Run on current repo (should pass)
+- **Negative cases**: 
+  - Temporarily rename a command file (should fail with specific message)
+  - Mock Node version < 18 (should fail with version message)
+- **Edge cases**: Empty directories, symlinks
+
+### Documentation Testing
+- **Completeness**: All commands and flags documented
+- **Accuracy**: Commands run successfully as documented
+- **Clarity**: New developer can follow without assistance
+
+### Integration Testing
+- **Fresh clone**: Clone repo, follow README, run verification
+- **Expected outcome**: Verification passes without additional steps
 
 
