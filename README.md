@@ -35,6 +35,20 @@ Outputs here (safe):
 - .kiro/settings/*
 - AGENTS.md
 
+### Verification
+
+After installation (or on fresh clones), verify the setup:
+
+```bash
+./tools/verify-cc-sdd.sh
+```
+
+The script checks:
+- Node.js version (>= 18)
+- Presence of Kiro commands (11 files) at `.cursor/commands/kiro/`
+- Settings structure at `.kiro/settings/`
+- `AGENTS.md` presence
+
 Update the vendor snapshot later (optional):
 
 ```bash

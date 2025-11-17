@@ -74,7 +74,18 @@ Verification Script (tools/verify-cc-sdd.sh)
 
 ### Verification Flow
 1. **Node Check**: Execute `node -v`, parse version, compare to minimum (18)
-2. **Commands Check**: Verify 11 expected files in `.cursor/commands/kiro/`
+2. **Commands Check**: Verify 11 expected files in `.cursor/commands/kiro/`:
+   - `spec-design.md`
+   - `spec-impl.md`
+   - `spec-init.md`
+   - `spec-requirements.md`
+   - `spec-status.md`
+   - `spec-tasks.md`
+   - `steering-custom.md`
+   - `steering.md`
+   - `validate-design.md`
+   - `validate-gap.md`
+   - `validate-impl.md`
 3. **Settings Check**: Verify directory structure in `.kiro/settings/`
 4. **Guidance Check**: Verify `AGENTS.md` exists
 5. **Report**: Output summary (all checks passed / X checks failed)

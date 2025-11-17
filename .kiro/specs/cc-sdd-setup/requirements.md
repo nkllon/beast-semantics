@@ -18,7 +18,18 @@ This specification defines the verification and documentation of the CC-SDD (Kir
 **Objective:** As a developer, I want to verify that CC-SDD tooling is correctly installed, so that I can confidently use spec-driven workflows.
 
 #### Acceptance Criteria
-1. WHEN verification runs THEN it SHALL confirm `.cursor/commands/kiro/*` commands exist (11 expected files).
+1. WHEN verification runs THEN it SHALL confirm `.cursor/commands/kiro/*` commands exist (11 expected files):
+   - `spec-design.md`
+   - `spec-impl.md`
+   - `spec-init.md`
+   - `spec-requirements.md`
+   - `spec-status.md`
+   - `spec-tasks.md`
+   - `steering-custom.md`
+   - `steering.md`
+   - `validate-design.md`
+   - `validate-gap.md`
+   - `validate-impl.md`
 2. WHEN verification runs THEN it SHALL confirm `.kiro/settings/*` structure exists (rules and templates).
 3. WHEN verification runs THEN it SHALL confirm `AGENTS.md` exists with CC-SDD guidance.
 4. IF any expected component is missing THEN verification SHALL report specific missing items.
