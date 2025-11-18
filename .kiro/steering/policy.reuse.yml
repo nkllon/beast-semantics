@@ -1,0 +1,27 @@
+version: 0.1.0
+owner: reuse@policy
+updated_at: null
+
+retrieval:
+  k: 10
+  alpha: 1.0 # 1.0 = lexical only; set <1.0 when dense added
+  seed: 42
+constraints:
+  recency_days: 180
+  cve_threshold: 7.0
+  require_osi_license: true
+scoring:
+  # Linear weights for s = w·φ
+  weights:
+    w_hybrid: 1.0
+    w_gap: 0.5
+    w_popularity: 0.2
+    w_recency: 0.2
+    w_fort_similarity: 0.5
+    w_security_penalty: -1.0
+    w_non_osi_penalty: -1.0
+decision:
+  tau: 0.6
+  delta: 0.1
+
+

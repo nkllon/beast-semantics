@@ -2,12 +2,20 @@
   "name": "beast-semantics",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "devDependencies": {
     "sparql-formatter": "1.0.2",
-    "sparqljs": "3.7.3"
+    "sparqljs": "3.7.3",
+    "fast-check": "3.15.0",
+    "semver": "7.6.3"
   },
   "scripts": {
-    "check:sparql": "node tools/sparql_check.mjs queries"
+    "check:sparql": "node tools/sparql_check.mjs queries",
+    "test:js": "node --test tools/publishing/*.test.mjs",
+    "preflight": "node tools/preflight.mjs --fort-required --require-packages semver fast-check --require-reuse-index 7",
+    "reuse:index": "node tools/reuse_index.mjs",
+    "reuse:search": "node tools/reuse_query.mjs --query",
+    "reuse:evidence": "node tools/reuse_evidence.mjs --query"
   }
 }
 
