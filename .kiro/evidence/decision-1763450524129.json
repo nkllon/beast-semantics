@@ -1,0 +1,116 @@
+{
+  "version": 1,
+  "created_at": "2025-11-18T07:22:04.951Z",
+  "host": "herbert.local",
+  "corpus_root": "/Volumes/lemon/cursor/beast-semantics",
+  "index_created_at": "2025-11-18T07:22:01.992Z",
+  "index_version": 1,
+  "policy_version": "0.1.0",
+  "policy_owner": "reuse@policy",
+  "k": 10,
+  "alpha": 1,
+  "tau": 0.65,
+  "delta": 0.1,
+  "weights": {
+    "phi_lex1": 0.6,
+    "phi_gap": 0.2,
+    "phi_recency": 0.1,
+    "phi_osi": 0.08,
+    "phi_popularity": 0.02,
+    "phi_cve_penalty": -0.5
+  },
+  "query_raw": "semver versioning",
+  "retrieval": [
+    {
+      "path": ".venv/lib/python3.14/site-packages/semver-3.0.4.dist-info/top_level.txt",
+      "s_lex": 0.720400101929938,
+      "s_den": 0,
+      "s_hyb": 0.720400101929938
+    },
+    {
+      "path": "tools/publishing/paths.mjs",
+      "s_lex": 0.45688323413768317,
+      "s_den": 0,
+      "s_hyb": 0.45688323413768317
+    },
+    {
+      "path": ".venv/lib/python3.14/site-packages/semver/__about__.py",
+      "s_lex": 0.45494999699641975,
+      "s_den": 0,
+      "s_hyb": 0.45494999699641975
+    },
+    {
+      "path": ".venv/lib/python3.14/site-packages/semver/__main__.py",
+      "s_lex": 0.34355371176065747,
+      "s_den": 0,
+      "s_hyb": 0.34355371176065747
+    },
+    {
+      "path": ".venv/lib/python3.14/site-packages/semver-3.0.4.dist-info/entry_points.txt",
+      "s_lex": 0.3220890638959443,
+      "s_den": 0,
+      "s_hyb": 0.3220890638959443
+    },
+    {
+      "path": ".venv/lib/python3.14/site-packages/semver/_deprecated.py",
+      "s_lex": 0.29356713947035173,
+      "s_den": 0,
+      "s_hyb": 0.29356713947035173
+    },
+    {
+      "path": "requirements.txt",
+      "s_lex": 0.24509046036560309,
+      "s_den": 0,
+      "s_hyb": 0.24509046036560309
+    },
+    {
+      "path": ".venv/lib/python3.14/site-packages/semver/version.py",
+      "s_lex": 0.1268112214180804,
+      "s_den": 0,
+      "s_hyb": 0.1268112214180804
+    },
+    {
+      "path": ".venv/lib/python3.14/site-packages/semver/__init__.py",
+      "s_lex": 0.10519972351417801,
+      "s_den": 0,
+      "s_hyb": 0.10519972351417801
+    },
+    {
+      "path": ".kiro/settings/templates/steering-custom/api-standards.md",
+      "s_lex": 0.09974754326075233,
+      "s_den": 0,
+      "s_hyb": 0.09974754326075233
+    }
+  ],
+  "metadata": {
+    "license": "MPL-2.0",
+    "recency_days": 0,
+    "cves": [],
+    "stars": null,
+    "downloads": null,
+    "language": null,
+    "api_fit_bool": null,
+    "citations": [
+      ".venv/lib/python3.14/site-packages/semver-3.0.4.dist-info/top_level.txt",
+      ".venv/lib/python3.14/site-packages/semver-3.0.4.dist-info/LICENSE.txt"
+    ]
+  },
+  "features": {
+    "phi_lex1": 0.720400101929938,
+    "phi_gap": 0.2635168677922548,
+    "phi_recency": 1,
+    "phi_osi": 1,
+    "phi_popularity": 0,
+    "phi_cve_penalty": 0
+  },
+  "constraints": {
+    "pass": true,
+    "c_osi": true,
+    "c_cve": true,
+    "c_recency": true
+  },
+  "score": 0.664943,
+  "margin": 0.210427,
+  "decision": "Accept",
+  "seed": 12345
+}

@@ -1,0 +1,22 @@
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<urn:sha256:23e74a22fa3b0a1b7acbdff576a8448436386778415368759ace3c55d28983ec> a void:Dataset,
+        dcat:Dataset ;
+    dcterms:description "Unified ontology and data graph assembled from repo modules." ;
+    dcterms:hasVersion "34c2cb8d716e107d045efc10d2c064c28cdcde57" ;
+    dcterms:issued "2025-11-18T08:10:12+00:00"^^xsd:dateTime ;
+    dcterms:title "Assembled ontology dataset" ;
+    void:classes 27 ;
+    void:entities 77 ;
+    void:properties 37 ;
+    void:triples 281 ;
+    void:vocabulary dcterms:,
+        prov:,
+        <https://ns.nkllon.com/words/v1/> ;
+    prov:wasGeneratedBy [ a prov:Activity ;
+            prov:startedAtTime "2025-11-18T08:10:12+00:00"^^xsd:dateTime ] .
+

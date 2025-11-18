@@ -1,0 +1,115 @@
+{
+  "version": 1,
+  "created_at": "2025-11-18T08:16:06.858Z",
+  "host": "herbert.local",
+  "corpus_root": "/Volumes/lemon/cursor/beast-semantics",
+  "index_created_at": "2025-11-18T07:22:01.992Z",
+  "index_version": 1,
+  "policy_version": "0.1.0",
+  "policy_owner": "platform-engineering",
+  "k": 10,
+  "alpha": 1,
+  "tau": 0.65,
+  "delta": 0.1,
+  "weights": {
+    "phi_lex1": 0.6,
+    "phi_gap": 0.2,
+    "phi_recency": 0.1,
+    "phi_osi": 0.08,
+    "phi_popularity": 0.02,
+    "phi_cve_penalty": -0.5
+  },
+  "query_raw": "smoke test reuse engine",
+  "retrieval": [
+    {
+      "path": "package.json",
+      "s_lex": 0.20784036737044134,
+      "s_den": 0,
+      "s_hyb": 0.20784036737044134
+    },
+    {
+      "path": ".kiro/specs/REFINEMENT_SUMMARY_2025-11-17.md",
+      "s_lex": 0.1526391999987682,
+      "s_den": 0,
+      "s_hyb": 0.1526391999987682
+    },
+    {
+      "path": ".kiro/specs/reuse-decisioning-policy-and-engine/tasks.md",
+      "s_lex": 0.14151904768788737,
+      "s_den": 0,
+      "s_hyb": 0.14151904768788737
+    },
+    {
+      "path": "apache-jena-4.10.0/src-examples/jena-examples/src/main/java/arq/examples/engine/MyQueryEngine.java",
+      "s_lex": 0.13740701168281,
+      "s_den": 0,
+      "s_hyb": 0.13740701168281
+    },
+    {
+      "path": ".kiro/specs/REFINEMENT_COMPLETE_FINAL.md",
+      "s_lex": 0.13453738605448418,
+      "s_den": 0,
+      "s_hyb": 0.13453738605448418
+    },
+    {
+      "path": ".kiro/specs/reuse-decisioning-policy-and-engine/spec.json",
+      "s_lex": 0.1305184529804701,
+      "s_den": 0,
+      "s_hyb": 0.1305184529804701
+    },
+    {
+      "path": ".kiro/specs/REFINEMENT_COMPLETE_V2.md",
+      "s_lex": 0.12812099026916296,
+      "s_den": 0,
+      "s_hyb": 0.12812099026916296
+    },
+    {
+      "path": "apache-jena-4.10.0/src-examples/jena-examples/src/main/java/arq/examples/bgpmatching/StageGeneratorAlt.java",
+      "s_lex": 0.11404459823013657,
+      "s_den": 0,
+      "s_hyb": 0.11404459823013657
+    },
+    {
+      "path": ".kiro/specs/reuse-decisioning-policy-and-engine/design.md",
+      "s_lex": 0.10484616481732636,
+      "s_den": 0,
+      "s_hyb": 0.10484616481732636
+    },
+    {
+      "path": ".kiro/specs/IMPLEMENTATION_STATUS.md",
+      "s_lex": 0.10274399023544936,
+      "s_den": 0,
+      "s_hyb": 0.10274399023544936
+    }
+  ],
+  "metadata": {
+    "license": null,
+    "recency_days": 0,
+    "cves": [],
+    "stars": null,
+    "downloads": null,
+    "language": null,
+    "api_fit_bool": null,
+    "citations": [
+      "package.json"
+    ]
+  },
+  "features": {
+    "phi_lex1": 0.20784036737044134,
+    "phi_gap": 0.05520116737167313,
+    "phi_recency": 1,
+    "phi_osi": 0,
+    "phi_popularity": 0,
+    "phi_cve_penalty": 0
+  },
+  "constraints": {
+    "pass": false,
+    "c_osi": false,
+    "c_cve": true,
+    "c_recency": true
+  },
+  "score": 0.235744,
+  "margin": 0.041937,
+  "decision": "Abstain",
+  "seed": 12345
+}

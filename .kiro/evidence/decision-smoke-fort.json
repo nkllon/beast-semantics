@@ -1,0 +1,115 @@
+{
+  "version": 1,
+  "created_at": "2025-11-18T08:27:24.428Z",
+  "host": "herbert.local",
+  "corpus_root": "/Volumes/lemon/cursor/beast-semantics",
+  "index_created_at": "2025-11-18T08:26:20.623Z",
+  "index_version": 1,
+  "policy_version": "0.1.0",
+  "policy_owner": "platform-engineering",
+  "k": 10,
+  "alpha": 1,
+  "tau": 0.65,
+  "delta": 0.1,
+  "weights": {
+    "phi_lex1": 0.6,
+    "phi_gap": 0.2,
+    "phi_recency": 0.1,
+    "phi_osi": 0.08,
+    "phi_popularity": 0.02,
+    "phi_cve_penalty": -0.5
+  },
+  "query_raw": "GraphQL gateway service template",
+  "retrieval": [
+    {
+      "path": ".kiro/specs/graphql-gateways/requirements.md",
+      "s_lex": 0.47843470014990425,
+      "s_den": 0,
+      "s_hyb": 0.47843470014990425
+    },
+    {
+      "path": ".kiro/specs/graphql-gateways/design.backup.md",
+      "s_lex": 0.3573845034017668,
+      "s_den": 0,
+      "s_hyb": 0.3573845034017668
+    },
+    {
+      "path": ".kiro/specs/graphql-gateways/design.md",
+      "s_lex": 0.3573845034017668,
+      "s_den": 0,
+      "s_hyb": 0.3573845034017668
+    },
+    {
+      "path": "tools/gateways/graphql-ld/README.md",
+      "s_lex": 0.22402604192254905,
+      "s_den": 0,
+      "s_hyb": 0.22402604192254905
+    },
+    {
+      "path": ".kiro/specs/ontology-runtime-queries/design.md",
+      "s_lex": 0.20445476547127253,
+      "s_den": 0,
+      "s_hyb": 0.20445476547127253
+    },
+    {
+      "path": "tools/gateways/hypergraphql/README.md",
+      "s_lex": 0.19970414028918132,
+      "s_den": 0,
+      "s_hyb": 0.19970414028918132
+    },
+    {
+      "path": "docs/specs-overview.md",
+      "s_lex": 0.18924404136068504,
+      "s_den": 0,
+      "s_hyb": 0.18924404136068504
+    },
+    {
+      "path": ".venv/lib/python3.14/site-packages/lark/tree_templates.py",
+      "s_lex": 0.17229624389609838,
+      "s_den": 0,
+      "s_hyb": 0.17229624389609838
+    },
+    {
+      "path": ".venv/lib/python3.14/site-packages/uri_template/__init__.py",
+      "s_lex": 0.15765249307194606,
+      "s_den": 0,
+      "s_hyb": 0.15765249307194606
+    },
+    {
+      "path": "tools/gateways/hypergraphql/config.json",
+      "s_lex": 0.13707042040144476,
+      "s_den": 0,
+      "s_hyb": 0.13707042040144476
+    }
+  ],
+  "metadata": {
+    "license": null,
+    "recency_days": 0,
+    "cves": [],
+    "stars": null,
+    "downloads": null,
+    "language": null,
+    "api_fit_bool": null,
+    "citations": [
+      ".kiro/specs/graphql-gateways/requirements.md"
+    ]
+  },
+  "features": {
+    "phi_lex1": 0.47843470014990425,
+    "phi_gap": 0.12105019674813744,
+    "phi_recency": 1,
+    "phi_osi": 0,
+    "phi_popularity": 0,
+    "phi_cve_penalty": 0
+  },
+  "constraints": {
+    "pass": false,
+    "c_osi": false,
+    "c_cve": true,
+    "c_recency": true
+  },
+  "score": 0.411271,
+  "margin": 0.09684,
+  "decision": "Abstain",
+  "seed": 12345
+}

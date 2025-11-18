@@ -16,6 +16,9 @@ Quick start
 3) Load to GraphDB (env GRAPHDB_URL, REPO_ID)
    - ./graphdb/load.sh build/lemon-kg.ttl
 
+See also
+- Specs overview and env mapping: `docs/specs-overview.md`
+
 ## Using bundled cc-sdd (local, no upstream changes)
 
 Prereqs: Node 18+
@@ -35,6 +38,65 @@ Outputs here (safe):
 - .kiro/settings/*
 - AGENTS.md
 
+### Verification
+
+After installation (or on fresh clones), verify the setup:
+
+```bash
+./tools/verify-cc-sdd.sh
+```
+
+The script checks:
+- Node.js version (>= 18)
+- Presence of Kiro commands (11 files) at `.cursor/commands/kiro/`
+- Settings structure at `.kiro/settings/`
+- `AGENTS.md` presence
+
+### Troubleshooting
+
+- Node.js 18+ required:
+  - Install or switch with nvm: `nvm install 18 && nvm use 18`
+  - Verify: `node -v` (should be v18 or higher)
+- Missing Kiro command files or settings:
+  - Re-run the vendored CLI from this repo root (safe, local-only):
+    ```bash
+    ./tools/vendor/cc-sdd/dist/cli.js \
+      --agent cursor \
+      --profile minimal \
+      --yes \
+      --overwrite skip \
+      --backup="/tmp/cc-sdd-backup"
+    ```
+- Release verification mismatches:
+  - Ensure files in `build/releases/<version>/` haven't been edited
+  - Recreate the snapshot: `./tools/release-freeze.sh <version>`
+  - Re-verify: `./tools/verify-release.sh <version>`
+- General tips:
+  - Run commands from the repository root
+  - Ensure `shasum` (macOS) or `sha256sum` is available for checksum steps
+
+## Release Freeze (Immutable Snapshot)
+
+Create a versioned, immutable snapshot with dual-hash manifests and SBOM:
+
+```bash
+# Freeze snapshot into build/releases/<version>/
+./tools/release-freeze.sh 1.2.3
+
+# Verify snapshot (SHA-256 and MD5)
+./tools/verify-release.sh 1.2.3
+
+# CC-SDD + release verification in one step
+./tools/verify-cc-sdd.sh --release 1.2.3
+```
+
+What it produces:
+- `build/releases/1.2.3/MANIFEST.sha256` (primary)
+- `build/releases/1.2.3/MANIFEST.md5` (compatibility)
+- `build/releases/1.2.3/release.label` (human-friendly label)
+- `build/releases/1.2.3/sbom.cdx.json` (CycloneDX, best-effort)
+- Curated artifacts: CC‑SDD setup plus domain build outputs (`build/*.ttl`, `build/shacl-*.txt`)
+
 Update the vendor snapshot later (optional):
 
 ```bash
@@ -46,4 +108,54 @@ rsync -a /Volumes/lemon/cursor/cc-sdd/tools/cc-sdd/templates/ tools/vendor/cc-sd
 Guardrails:
 - Do not modify upstream cc-sdd here.
 - Commit the vendored tree if you refresh it, so CI is reproducible.
+
+## CI Gates (OSS RDF/SPARQL QA)
+
+This repository includes a GitHub Actions workflow that validates RDF/TTL/SPARQL and runs security gates:
+
+- RDF syntax validation: Apache Jena RIOT (`riot --validate`) over `ontology/`, `shapes/`, `mappings/`, `build/`
+- RDF lint: `rdflint` (Fatal/Error fail; style-level warnings do not fail)
+- SPARQL parsing/formatting: `tools/sparql_check.mjs` on `queries/**/*.rq`
+  - Parse errors fail the job
+  - Formatting drift is a warning by default
+  - To enforce formatting as errors, set environment variable `ENFORCE_SPQ_FORMAT=true`
+- Secrets scanning: `gitleaks` with `--redact`
+- Python dependency scanning: `pip-audit` (fails on CVSS ≥ 7.0)
+- Domain metric (baseline): simple diversity metric over query name prefixes; fails on regression
+
+A concise pass/fail summary is written to the GitHub Actions Job Summary. All action versions and tool installs are pinned for reproducibility, and Node installs use `--no-fund --no-audit`.
+
+Remediation tips:
+- RIOT failures: fix TTL/TriG/N-Triples/N-Quads syntax at the reported file:line:column
+- rdflint Fatal/Error: address structural issues; style warnings are advisory
+- SPARQL parse errors: correct syntax where the error points; run `tools/sparql_check.mjs queries` locally
+- Secrets: remove and rotate any leaked credentials; amend history if needed
+- pip-audit High/Critical: upgrade affected packages; re-run audit
+
+## Reuse Decisioning (Policy + Engine)
+
+Quick local run:
+
+```bash
+# 1) Configure Fort Desktop path (durable options; pick one)
+# 1a) Single-line file (preferred, durable per repo):
+echo "/absolute/path/to/your/fort/desktop" > .kiro/steering-custom/fort.path
+# 1b) Or set an absolute path in .kiro/steering-custom/external-sources.md under "Fort desktop projects"
+# 1c) Or add to your ~/.env (dotenv):
+#    echo 'FORT_DESKTOP=/absolute/path/to/your/fort/desktop' >> ~/.env
+# 1c) Or export for this session:
+# export FORT_DESKTOP="/absolute/path/to/your/fort/desktop"
+
+# 2) Build/update the reuse index (writes .kiro/reuse/index.json)
+npm run reuse:index
+
+# 3) Make a decision with policy at .kiro/steering/policy.reuse.yml
+npm run reuse:decide -- --query "GraphQL gateway service template"
+# Evidence JSON will be written under .kiro/evidence/decision-*.json
+```
+
+Policy file:
+- Path: `.kiro/steering/policy.reuse.yml`
+- Fields: `version`, `owner`, `k`, `alpha`, `tau`, `delta`, `recency_days`, `cve_threshold`, `weights`, `seed`
+- The decision engine loads and enforces these parameters deterministically. If confidence is insufficient or constraints fail, it abstains.
 
