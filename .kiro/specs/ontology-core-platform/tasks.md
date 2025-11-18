@@ -1,10 +1,11 @@
 # Implementation Plan
 
-- [ ] 1. Implement release management system
+- [x] 1. Implement release management system
   - Create release directory structure following `/releases/Major.Minor.Patch/` pattern
   - Implement `/latest` pointer management
   - Ensure immutable artifact storage
   - _Requirements: 1.1, 1.2, 1.3, 1.4_
+  - **Status**: Implemented via `tools/release_freeze.py` and example at `build/releases/1.2.3/`
 
 - [ ] 1.1 Implement SemVer validation
   - Create version parsing and validation functions
@@ -25,17 +26,19 @@
   - **Property 2: Release path structure consistency**
   - **Validates: Requirements 1.2**
 
-- [ ] 2. Implement manifest generation and verification
+- [x] 2. Implement manifest generation and verification
   - Generate SHA-256 checksums for all release artifacts
   - Create MANIFEST.sha256 files
   - Optionally generate MD5 manifests
   - _Requirements: 16.1, 16.2_
+  - **Status**: Implemented via `tools/release_freeze.py` and `tools/verify-release.sh`
 
-- [ ] 2.1 Implement manifest verification
+- [x] 2.1 Implement manifest verification
   - Rebuild artifacts and compare checksums
   - Detect and report mismatches
   - Fail verification on any mismatch
   - _Requirements: 16.3_
+  - **Status**: Implemented in `tools/verify-release.sh`
 
 - [ ]* 2.2 Write property test for manifest integrity
   - **Property 9: Manifest integrity**

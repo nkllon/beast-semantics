@@ -57,6 +57,7 @@
   - Create /latest pointer to current release
   - Ensure versioned releases are immutable
   - _Requirements: 2.1, 2.2, 2.3_
+  - **Partial**: Path utilities exist in `tools/publishing/paths.mjs` with tests
 
 - [ ]* 5.1 Write property test for versioned path structure
   - **Property 4: Versioned path structure**

@@ -3,8 +3,9 @@
 ## Phase 1 — Core Retrieval, Policy, and Decision
 - [ ] 1. Add policy file
   - Create `.kiro/steering/policy.reuse.yml` with defaults: k, α, τ, Δ, recency_days, cve_threshold, weights w, seed
-- [ ] 2. Enhance lexical indexer
+- [x] 2. Enhance lexical indexer
   - Support configurable include/exclude globs, chunk sizing, and reproducible ordering in `tools/reuse_index.mjs`
+  - **Status**: Implemented in `tools/reuse_index.mjs`
 - [ ] 3. Add hybrid retrieval
   - Add s_hyb to evidence paths; expose α and k via CLI flags and policy
 - [ ] 4. Metadata extraction
@@ -17,6 +18,55 @@
 - [ ] 7. CLI surfaces
   - `npm run reuse:search -- "<q>"` returns ranked paths with scores
   - `npm run reuse:evidence -- "<q>"` writes evidence and prints decision
+  - **Partial**: Core tools exist (`tools/reuse_query.mjs`, `tools/reuse_evidence.mjs`), need CLI wiring
+
+- [ ]* 7.1 Write property test for dual-channel retrieval
+  - **Property 1: Dual-channel retrieval completeness**
+  - **Validates: Requirements R-RET**
+
+- [ ]* 7.2 Write property test for evidence completeness
+  - **Property 2: Evidence completeness**
+  - **Validates: Requirements R-EVD**
+
+- [ ]* 7.3 Write property test for constraint enforcement
+  - **Property 3: Constraint enforcement**
+  - **Validates: Requirements R-CST**
+
+- [ ]* 7.4 Write property test for decision rule correctness
+  - **Property 4: Decision rule correctness**
+  - **Validates: Requirements R-DEC**
+
+- [ ]* 7.5 Write property test for LLM output schema validation
+  - **Property 5: LLM output schema validation**
+  - **Validates: Requirements R-LLM**
+
+- [ ]* 7.6 Write property test for policy version tracking
+  - **Property 6: Policy version tracking**
+  - **Validates: Requirements R-POL**
+
+- [ ]* 7.7 Write property test for preflight enforcement
+  - **Property 7: Preflight enforcement**
+  - **Validates: Requirements R-PFL**
+
+- [ ]* 7.8 Write property test for network-free operation
+  - **Property 8: Network-free operation**
+  - **Validates: Requirements R-OPS**
+
+- [ ]* 7.9 Write property test for TF-IDF calculation
+  - **Property 9: TF-IDF calculation correctness**
+  - **Validates: Requirements Mathematical Specification (1)**
+
+- [ ]* 7.10 Write property test for hybrid score calculation
+  - **Property 10: Hybrid score calculation**
+  - **Validates: Requirements Mathematical Specification (3)**
+
+- [ ]* 7.11 Write property test for decision determinism
+  - **Property 11: Decision determinism**
+  - **Validates: Requirements Non-Functional (Reproducibility)**
+
+- [ ]* 7.12 Write property test for constraint logic
+  - **Property 12: Constraint logic correctness**
+  - **Validates: Requirements Mathematical Specification (4)**
 
 ## Phase 2 — Evaluation and Tuning
 - [ ] 8. Labeled eval set
