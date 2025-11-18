@@ -106,3 +106,26 @@ Guardrails:
 - Do not modify upstream cc-sdd here.
 - Commit the vendored tree if you refresh it, so CI is reproducible.
 
+## CI Gates (OSS RDF/SPARQL QA)
+
+This repository includes a GitHub Actions workflow that validates RDF/TTL/SPARQL and runs security gates:
+
+- RDF syntax validation: Apache Jena RIOT (`riot --validate`) over `ontology/`, `shapes/`, `mappings/`, `build/`
+- RDF lint: `rdflint` (Fatal/Error fail; style-level warnings do not fail)
+- SPARQL parsing/formatting: `tools/sparql_check.mjs` on `queries/**/*.rq`
+  - Parse errors fail the job
+  - Formatting drift is a warning by default
+  - To enforce formatting as errors, set environment variable `ENFORCE_SPQ_FORMAT=true`
+- Secrets scanning: `gitleaks` with `--redact`
+- Python dependency scanning: `pip-audit` (fails on CVSS ≥ 7.0)
+- Domain metric (baseline): simple diversity metric over query name prefixes; fails on regression
+
+A concise pass/fail summary is written to the GitHub Actions Job Summary. All action versions and tool installs are pinned for reproducibility, and Node installs use `--no-fund --no-audit`.
+
+Remediation tips:
+- RIOT failures: fix TTL/TriG/N-Triples/N-Quads syntax at the reported file:line:column
+- rdflint Fatal/Error: address structural issues; style warnings are advisory
+- SPARQL parse errors: correct syntax where the error points; run `tools/sparql_check.mjs queries` locally
+- Secrets: remove and rotate any leaked credentials; amend history if needed
+- pip-audit High/Critical: upgrade affected packages; re-run audit
+
