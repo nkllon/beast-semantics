@@ -69,3 +69,9 @@ tools/bin/
 /build/shacl-report.txt
 
 
+# Kiro workspace large/generated artifacts
+.kiro/reuse/
+
+# Release artifacts (generated)
+/build/releases/
+
