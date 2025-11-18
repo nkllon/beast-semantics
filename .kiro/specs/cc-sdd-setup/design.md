@@ -90,6 +90,15 @@ Verification Script (tools/verify-cc-sdd.sh)
 4. **Guidance Check**: Verify `AGENTS.md` exists
 5. **Report**: Output summary (all checks passed / X checks failed)
 
+### Release Freeze Flow (immutability)
+1. **Input**: Version string `<version>` (SemVer recommended)
+2. **Preconditions**: Clean git working tree; current branch is main or a release branch
+3. **Snapshot**: Create `build/releases/<version>/`
+4. **Copy Artifacts**: Include `AGENTS.md`, `README.md`, `.cursor/commands/kiro/**`, `.kiro/settings/**`, and `tools/**`
+5. **Checksums**: Generate `MANIFEST.sha256` with SHA-256 for all files in the snapshot
+6. **Optional Tag**: Create a git tag `v<version>` and push
+7. **Verify**: `verify-cc-sdd.sh --release <version>` confirms manifest matches
+
 ### Installation Flow (documented, not automated)
 1. Developer reads README.md prerequisites
 2. Developer runs documented CLI command
@@ -106,9 +115,15 @@ Verification Script (tools/verify-cc-sdd.sh)
 
 ### Verification Script (`tools/verify-cc-sdd.sh`)
 - **Responsibility**: Validate CC-SDD installation completeness
-- **Input**: File system state
+- **Input**: File system state; optional `--release <version>` to validate a frozen release
 - **Output**: Exit code (0=pass, 1=fail) and human-readable report
 - **Dependencies**: bash, node (for version check)
+
+### Release Freeze Script (`tools/release-freeze.sh`)
+- **Responsibility**: Produce immutable release snapshot with checksums
+- **Input**: `<version>` argument; optional `--tag` to create a git tag
+- **Output**: `build/releases/<version>/` and `MANIFEST.sha256`
+- **Dependencies**: bash, find, shasum (or sha256sum), git (optional tag)
 
 ### Documentation (`README.md`)
 - **Responsibility**: Provide setup and maintenance procedures

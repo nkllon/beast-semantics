@@ -78,9 +78,9 @@ echo "Computing MANIFEST.sha256 and MANIFEST.md5 ..."
   cd "$OUT_DIR"
   # Use shasum -a 256 (macOS) falling back to sha256sum if available
   if command -v shasum >/dev/null 2>&1; then
-    find . -type f ! -name "MANIFEST.sha256" -print0 | sort -z | xargs -0 shasum -a 256 | sed 's| ./||' >> "$MANIFEST"
+    find . -type f ! -name "MANIFEST.sha256" ! -name "MANIFEST.md5" -print0 | sort -z | xargs -0 shasum -a 256 | sed 's| ./||' >> "$MANIFEST"
   elif command -v sha256sum >/dev/null 2>&1; then
-    find . -type f ! -name "MANIFEST.sha256" -print0 | sort -z | xargs -0 sha256sum | sed 's| \\./||' >> "$MANIFEST"
+    find . -type f ! -name "MANIFEST.sha256" ! -name "MANIFEST.md5" -print0 | sort -z | xargs -0 sha256sum | sed 's| \\./||' >> "$MANIFEST"
   else
     echo "No sha256 tool found (shasum or sha256sum required)" >&2
     exit 3
@@ -93,9 +93,9 @@ echo "Computing MANIFEST.sha256 and MANIFEST.md5 ..."
       h="$(md5 -r "$f" | awk '{print $1}')"
       rel="${f#./}"
       echo "$h  $rel" >> "$MANIFEST_MD5"
-    done < <(find . -type f ! -name "MANIFEST.md5" -print0 | sort -z)
+    done < <(find . -type f ! -name "MANIFEST.sha256" ! -name "MANIFEST.md5" -print0 | sort -z)
   elif command -v md5sum >/dev/null 2>&1; then
-    find . -type f ! -name "MANIFEST.md5" -print0 | sort -z | xargs -0 md5sum | sed 's| \\./||' >> "$MANIFEST_MD5"
+    find . -type f ! -name "MANIFEST.sha256" ! -name "MANIFEST.md5" -print0 | sort -z | xargs -0 md5sum | sed 's| \\./||' >> "$MANIFEST_MD5"
   else
     echo "No md5 tool found (md5 or md5sum). Skipping MANIFEST.md5" >&2
     rm -f "$MANIFEST_MD5"

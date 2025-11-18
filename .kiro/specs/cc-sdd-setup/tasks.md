@@ -35,6 +35,15 @@ The CC-SDD tooling is already installed. These tasks focus on creating verificat
   - _Requirements: R1, R2, R3, R4_
   - _Estimated effort: 15 minutes_
 
+- [ ] 4. Implement release immutability
+  - Create `tools/release-freeze.sh` to snapshot artifacts into `build/releases/<version>/`
+  - Include `AGENTS.md`, `README.md`, `.cursor/commands/kiro/**`, `.kiro/settings/**`, `tools/**`
+  - Generate `MANIFEST.sha256` for all snapshot files
+  - Extend `tools/verify-cc-sdd.sh` to accept `--release <version>` and validate checksums
+  - Document the release process in `README.md` (freeze, verify, tag/push)
+  - _Requirements: R5_
+  - _Estimated effort: 45 minutes_
+
 ## Task Dependencies
 - Task 2 depends on Task 1 (need script path for documentation)
 - Task 3 depends on Tasks 1 and 2 (validates both deliverables)

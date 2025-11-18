@@ -53,4 +53,14 @@ This specification defines the verification and documentation of the CC-SDD (Kir
 3. WHEN verification fails THEN it SHALL provide clear output indicating what failed and how to fix it.
 4. WHERE the script is documented THEN `README.md` SHALL include usage instructions.
 
+### Requirement 5: Release immutability
+**Objective:** As a maintainer, I want all artifacts to be immutable at the released version, so that released states are reproducible and tamper-evident.
+
+#### Acceptance Criteria
+1. WHEN a release is created THEN a versioned snapshot directory SHALL be produced at `build/releases/<version>/`.
+2. WHEN the snapshot is produced THEN it SHALL include at minimum: `AGENTS.md`, `README.md`, `.cursor/commands/kiro/**`, `.kiro/settings/**`, and `tools/**`.
+3. WHEN the snapshot is produced THEN a `MANIFEST.sha256` SHALL be generated over all files in the snapshot.
+4. WHEN verification runs with a `--release <version>` argument THEN it SHALL verify that the snapshot exists and that all files match the checksums in `MANIFEST.sha256`.
+5. WHERE version control workflows are used THEN a git tag for the release version SHALL be created and pushed per documentation.
+
 

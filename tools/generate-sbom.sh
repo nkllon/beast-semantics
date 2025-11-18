@@ -12,6 +12,15 @@ OUT_DIR="$(dirname "$OUT")"
 mkdir -p "$OUT_DIR"
 
 # Prefer cyclonedx-bom if available
+# Prefer cyclonedx tools if available
+if command -v cyclonedx-py >/dev/null 2>&1; then
+  if [ -f "requirements.txt" ]; then
+    echo "Generating CycloneDX SBOM from requirements.txt using cyclonedx-py ..."
+    cyclonedx-py requirements requirements.txt --of JSON -o "$OUT" --output-reproducible
+    echo "SBOM written to: $OUT"
+    exit 0
+  fi
+fi
 if command -v cyclonedx-bom >/dev/null 2>&1; then
   if [ -f "requirements.txt" ]; then
     echo "Generating CycloneDX SBOM from requirements.txt using cyclonedx-bom ..."
