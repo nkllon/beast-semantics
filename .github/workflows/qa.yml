@@ -56,33 +56,21 @@ jobs:
       - name: SPARQL validation (parse + format)
         run: |
           node tools/sparql_check.mjs queries
-
-      - name: Build RIOT Docker image
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: RDF validation (RDFLib)
         run: |
           set -euo pipefail
-          JENA_VERSION=4.10.0
-          docker build -t riot:$JENA_VERSION -f tools/docker/jena-riot/Dockerfile --build-arg JENA_VERSION=$JENA_VERSION .
-
-      - name: RIOT validate RDF files (Docker)
-        run: |
-          set -euo pipefail
-          FAIL=0
-          # Validate within these directories only
-          files="$(git ls-files '**/*.ttl' '**/*.trig' '**/*.nt' '**/*.nq' | grep -E '^(ontology|shapes|mappings|build)/' || true)"
-          if [ -z "$files" ]; then
-            echo "No RDF files found in target directories."
-            exit 0
-          fi
-          JENA_VERSION=4.10.0
-          while IFS= read -r f; do
-            echo "Validating: $f"
-            if ! docker run --rm -v "$PWD:/work" riot:$JENA_VERSION --validate "$f"; then
-              FAIL=1
-            fi
-          done <<EOF
-          $files
-          EOF
-          exit $FAIL
+          python tools/validate_rdf.py
 
       - name: Download rdflint
         run: |
@@ -104,11 +92,6 @@ jobs:
         uses: gitleaks/gitleaks-action@v2
         with:
           args: --redact
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.x"
 
       - name: Install pip-audit
         run: |
@@ -193,7 +176,7 @@ jobs:
             echo "## QA Summary";
             echo "";
             echo "- SPARQL parse/format: completed";
-            echo "- RIOT RDF validation: completed";
+            echo "- RDFLib RDF validation: completed";
             echo "- rdflint: completed";
             echo "- gitleaks: completed";
             echo "- pip-audit (CVSS >= 7.0 fails): completed";

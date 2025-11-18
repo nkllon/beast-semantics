@@ -41,8 +41,8 @@ echo "== Install Python deps =="
 "$PY" -m pip install --upgrade pip
 "$PIP" install -r requirements.txt
 
-echo "== TTL lint (rdflib parse) =="
-$PY tools/lint_ttl.py
+echo "== RDF validation (RDFLib across ttl/trig/nt/nq) =="
+$PY tools/validate_rdf.py
 
 echo "== Assemble ontology =="
 $PY tools/assemble.py
@@ -56,42 +56,7 @@ npm ci --no-fund --no-audit
 echo "== SPARQL parse/format check =="
 node tools/sparql_check.mjs queries || true
 
-echo "== RIOT validate RDF files =="
-set +e
-FAIL=0
-files="$(git ls-files '**/*.ttl' '**/*.trig' '**/*.nt' '**/*.nq' | grep -E '^(ontology|shapes|mappings|build)/' || true)"
-if [ -n "$files" ]; then
-  if command -v docker >/dev/null 2>&1; then
-    echo "Using Dockerized RIOT..."
-    JENA_VERSION="${JENA_VERSION:-4.10.0}"
-    docker build -t riot:$JENA_VERSION -f tools/docker/jena-riot/Dockerfile --build-arg JENA_VERSION=$JENA_VERSION .
-    while IFS= read -r f; do
-      echo "Validating: $f"
-      if ! docker run --rm -v "$ROOT:/work" riot:$JENA_VERSION --validate "$f"; then
-        FAIL=1
-      fi
-    done <<EOF
-$files
-EOF
-  else
-    echo "Docker not found; falling back to local Jena fetch..."
-    JENA_VERSION="${JENA_VERSION:-4.10.0}" bash tools/fetch_jena.sh
-    export PATH="$PATH:$ROOT/apache-jena-${JENA_VERSION}/bin"
-    while IFS= read -r f; do
-      echo "Validating: $f"
-      if ! riot --validate "$f"; then
-        FAIL=1
-      fi
-    done <<EOF
-$files
-EOF
-  fi
-fi
-set -e
-if [ "$FAIL" -ne 0 ]; then
-  echo "RIOT validation failed" >&2
-  exit 1
-fi
+echo "== Skip Jena/RIOT (removed) =="
 
 echo "== Download rdflint =="
 RDFLINT_VERSION="${RDFLINT_VERSION:-1.2.1}"

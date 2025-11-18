@@ -346,8 +346,13 @@ words:Hypothesis a owl:Class ;
     rdfs:subClassOf prov:Entity .
 
 [] a owl:Ontology ;
-    dcterms:description "Incentive structures, stakeholders, energy/resource flows and gradients." ;
-    dcterms:title "Lemon Incentives & Energy Module" ;
+    dcterms:description "Perspective diversity model, indices, coverage, novelty, sets." ;
+    dcterms:title "Lemon Diversity Module" ;
+    owl:versionInfo "0.1.0" .
+
+[] a owl:Ontology ;
+    dcterms:description "Lightweight alignments to PROV-O and DCAT." ;
+    dcterms:title "Lemon Alignment Module" ;
     owl:versionInfo "0.1.0" .
 
 [] a owl:Ontology ;
@@ -361,12 +366,7 @@ words:Hypothesis a owl:Class ;
     owl:versionInfo "0.1.0" .
 
 [] a owl:Ontology ;
-    dcterms:description "Perspective diversity model, indices, coverage, novelty, sets." ;
-    dcterms:title "Lemon Diversity Module" ;
-    owl:versionInfo "0.1.0" .
-
-[] a owl:Ontology ;
-    dcterms:description "Lightweight alignments to PROV-O and DCAT." ;
-    dcterms:title "Lemon Alignment Module" ;
+    dcterms:description "Incentive structures, stakeholders, energy/resource flows and gradients." ;
+    dcterms:title "Lemon Incentives & Energy Module" ;
     owl:versionInfo "0.1.0" .
 

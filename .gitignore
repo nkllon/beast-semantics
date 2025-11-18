@@ -54,7 +54,11 @@ rdflint.jar
 
 # Caches and temp
 .cache/
+/.tmp/
 tmp/
 temp/
+
+# Vendored bundles
+apache-jena-*/
 
 
