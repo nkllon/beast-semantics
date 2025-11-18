@@ -61,4 +61,7 @@ temp/
 # Vendored bundles
 apache-jena-*/
 
+# Local tool binaries
+tools/bin/
+
 

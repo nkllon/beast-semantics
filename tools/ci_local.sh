@@ -24,7 +24,6 @@ command -v node >/dev/null 2>&1 || { echo "Missing Node.js (>=20). Install Node.
 command -v npm  >/dev/null 2>&1 || { echo "Missing npm. Install Node/npm." >&2; exit 1; }
 # curl
 command -v curl >/dev/null 2>&1 || { echo "Missing curl. Install curl." >&2; exit 1; }
-:
 
 echo "== Python virtualenv =="
 if [ -z "${VIRTUAL_ENV:-}" ] || [ "$VIRTUAL_ENV" != "$ROOT/.venv" ]; then
@@ -57,14 +56,13 @@ node tools/sparql_check.mjs queries || true
 
 echo "== Skip Jena/RIOT (removed) =="
 
-:
-
-echo "== (Optional) gitleaks =="
-if command -v gitleaks >/dev/null 2>&1; then
-  gitleaks detect --redact || true
-else
-  echo "gitleaks not installed locally; skipping."
+echo "== gitleaks =="
+BIN_DIR="$ROOT/tools/bin"
+export PATH="$BIN_DIR:$PATH"
+if ! command -v gitleaks >/dev/null 2>&1; then
+  bash tools/install_gitleaks.sh
 fi
+gitleaks detect --redact
 
 echo "== pip-audit (fail on CVSS >= 7.0) =="
 pip install "pip-audit==2.7.3"
@@ -105,6 +103,7 @@ try:
 except Exception:
     print('metrics_diversity.py not available; skipping.')
     raise SystemExit(0)
+
 def shannon_for(dir_path):
     labels = []
     qdir = os.path.join(dir_path, 'queries')
@@ -115,6 +114,7 @@ def shannon_for(dir_path):
             if f.endswith('.rq'):
                 labels.append(f.split('_')[0])
     return shannon_index(labels)
+
 cur = shannon_for('.')
 print(f"Shannon diversity current={cur:.4f}")
 PY
