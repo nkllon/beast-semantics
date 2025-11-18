@@ -22,6 +22,77 @@ jobs:
         run: python tools/assemble.py
       - name: Validate (pySHACL)
         run: python tools/validate.py
+      - name: Setup Java for RDF tools
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+      - name: Setup Node.js for SPARQL tools
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - name: Install SPARQL tools
+        run: |
+          npm --version
+          npm install --global --no-fund --no-audit sparqljs sparql-formatter
+      - name: Install Apache Jena (RIOT)
+        run: |
+          set -euo pipefail
+          JENA_VERSION="4.10.0"
+          curl -sSL "https://downloads.apache.org/jena/binaries/apache-jena-${JENA_VERSION}.tar.gz" -o jena.tar.gz
+          tar -xzf jena.tar.gz
+          echo "${{ github.workspace }}/apache-jena-${JENA_VERSION}/bin" >> $GITHUB_PATH
+      - name: RDF Validation (RIOT)
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          files=()
+          while IFS= read -r -d '' f; do files+=("$f"); done < <(find ontology shapes mappings build -type f \( -name '*.ttl' -o -name '*.trig' -o -name '*.nt' -o -name '*.nq' \) -print0 2>/dev/null || true)
+          if [ "${#files[@]}" -eq 0 ]; then
+            echo "No RDF files to validate."
+            exit 0
+          fi
+          # Validate each file to get precise failures
+          failed=0
+          for f in "${files[@]}"; do
+            if ! riot --validate "$f"; then
+              echo "::error file=$f::RIOT validation failed"
+              failed=1
+            fi
+          done
+          exit $failed
+      - name: Install rdflint
+        run: |
+          set -euo pipefail
+          RDFLINT_VERSION="1.1.7"
+          curl -sSL "https://github.com/imas/rdflint/releases/download/v${RDFLINT_VERSION}/rdflint-all-${RDFLINT_VERSION}.jar" -o rdflint.jar
+      - name: RDF Lint (rdflint)
+        run: |
+          set -euo pipefail
+          if [ ! -f rdflint.jar ]; then
+            echo "rdflint.jar not found"
+            exit 2
+          fi
+          # Run with defaults; treat non-zero exit as failure
+          java -jar rdflint.jar || exit 1
+      - name: SPARQL Parse/Format Check
+        run: |
+          node tools/sparql_check.mjs queries || exit $?
+      - name: Secrets scan (gitleaks)
+        uses: gitleaks/gitleaks-action@v2
+        with:
+          args: --no-banner --redact
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Dependency audit (pip-audit)
+        run: |
+          pip install --upgrade pip pip-audit
+          if [ -f requirements.txt ]; then
+            pip-audit -r requirements.txt --strict || exit $?
+          else
+            pip-audit --strict || exit $?
+          fi
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
