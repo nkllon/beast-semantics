@@ -49,6 +49,29 @@ The script checks:
 - Settings structure at `.kiro/settings/`
 - `AGENTS.md` presence
 
+### Troubleshooting
+
+- Node.js 18+ required:
+  - Install or switch with nvm: `nvm install 18 && nvm use 18`
+  - Verify: `node -v` (should be v18 or higher)
+- Missing Kiro command files or settings:
+  - Re-run the vendored CLI from this repo root (safe, local-only):
+    ```bash
+    ./tools/vendor/cc-sdd/dist/cli.js \
+      --agent cursor \
+      --profile minimal \
+      --yes \
+      --overwrite skip \
+      --backup="/tmp/cc-sdd-backup"
+    ```
+- Release verification mismatches:
+  - Ensure files in `build/releases/<version>/` haven't been edited
+  - Recreate the snapshot: `./tools/release-freeze.sh <version>`
+  - Re-verify: `./tools/verify-release.sh <version>`
+- General tips:
+  - Run commands from the repository root
+  - Ensure `shasum` (macOS) or `sha256sum` is available for checksum steps
+
 ## Release Freeze (Immutable Snapshot)
 
 Create a versioned, immutable snapshot with dual-hash manifests and SBOM:
