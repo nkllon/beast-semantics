@@ -1,3 +1,28 @@
+version: "0.1.0"
+owner: "platform-engineering"
+
+# Retrieval and scoring parameters
+k: 10               # top-k candidates
+alpha: 1.0          # hybrid weight (lexical only by default)
+tau: 0.65           # accept threshold for score s
+delta: 0.10         # margin between best and runner-up
+
+# Constraint windows
+recency_days: 365   # max age of last release/commit in days
+cve_threshold: 7.0  # CVSS score threshold considered high severity
+
+# Feature weights (w · φ)
+weights:
+  phi_lex1: 0.60         # top-1 lexical similarity
+  phi_gap: 0.20          # gap between top-1 and top-2 lexical scores
+  phi_recency: 0.10      # freshness signal (1.0 is freshest)
+  phi_osi: 0.08          # open-source license flag
+  phi_popularity: 0.02   # popularity proxy (z-scored; may be 0 offline)
+  phi_cve_penalty: -0.50 # penalty if any high-severity CVEs present
+
+# Reproducibility
+seed: 12345
+
 version: 0.1.0
 owner: reuse@policy
 updated_at: null

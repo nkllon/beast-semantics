@@ -14,8 +14,10 @@
     "test:js": "node --test tools/publishing/*.test.mjs",
     "preflight": "node tools/preflight.mjs --fort-required --require-packages semver fast-check --require-reuse-index 7",
     "reuse:index": "node tools/reuse_index.mjs",
-    "reuse:search": "node tools/reuse_query.mjs --query",
-    "reuse:evidence": "node tools/reuse_evidence.mjs --query"
+    "reuse:search": "npm run -s preflight && node tools/reuse_query.mjs --query",
+    "reuse:evidence": "npm run -s preflight && node tools/reuse_evidence.mjs --query",
+    "reuse:decide": "npm run -s preflight && node tools/reuse_decision.mjs --query",
+    "reuse:setup": "node tools/setup_reuse_dirs.mjs"
   }
 }
 
