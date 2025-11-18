@@ -1,0 +1,60 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-debug.log*
+
+# Node
+node_modules/
+.npm
+.nyc_output/
+.parcel-cache/
+*.tsbuildinfo
+
+# Python
+__pycache__/
+*.py[cod]
+.python-version
+.venv/
+venv/
+env/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# Coverage
+coverage/
+
+# Editors/IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.history/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Build artifacts (root-only)
+/dist/
+
+# Tool/CI artifacts
+audit.json
+rdflint.jar
+
+# Caches and temp
+.cache/
+tmp/
+temp/
+
+
