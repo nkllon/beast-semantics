@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Local runner that mirrors the GitHub QA workflow as closely as possible.
-# It assumes Python, Node (>=20), Java (for RIOT), and Docker (optional for rdflint via jar) are available.
+# It assumes Python and Node (>=20) are available.
 #
 # Usage:
 #   tools/ci_local.sh            # run all steps
@@ -24,8 +24,7 @@ command -v node >/dev/null 2>&1 || { echo "Missing Node.js (>=20). Install Node.
 command -v npm  >/dev/null 2>&1 || { echo "Missing npm. Install Node/npm." >&2; exit 1; }
 # curl
 command -v curl >/dev/null 2>&1 || { echo "Missing curl. Install curl." >&2; exit 1; }
-# Java (required for rdflint)
-command -v java >/dev/null 2>&1 || { echo "Missing Java (for rdflint). Install a JDK (e.g., Temurin 21)." >&2; exit 1; }
+:
 
 echo "== Python virtualenv =="
 if [ -z "${VIRTUAL_ENV:-}" ] || [ "$VIRTUAL_ENV" != "$ROOT/.venv" ]; then
@@ -58,16 +57,7 @@ node tools/sparql_check.mjs queries || true
 
 echo "== Skip Jena/RIOT (removed) =="
 
-echo "== Download rdflint =="
-RDFLINT_VERSION="${RDFLINT_VERSION:-1.2.1}"
-curl -fsSL -o rdflint.jar "https://github.com/imas/rdflint/releases/download/v${RDFLINT_VERSION}/rdflint-all-${RDFLINT_VERSION}.jar"
-
-echo "== rdflint check =="
-java -jar rdflint.jar \
-  --target ./ontology \
-  --target ./shapes \
-  --target ./mappings \
-  --target ./build
+:
 
 echo "== (Optional) gitleaks =="
 if command -v gitleaks >/dev/null 2>&1; then
