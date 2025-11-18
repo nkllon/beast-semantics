@@ -141,3 +141,95 @@ This specification defines shared standards, controls, and reusable assets for o
 4. THE Core Platform SHALL provide load test script examples.
 
 
+
+### Requirement 11: Reproducible Build
+
+**User Story:** As a release engineer, I want reproducible builds with verification, so that I can ensure release artifacts match their source and detect tampering.
+
+#### Acceptance Criteria
+
+1. WHEN a release tag is created, THE Core Platform SHALL support a rebuild-and-verify flow in CI.
+2. WHEN the verify-release job runs, THE Core Platform SHALL rebuild artifacts and compare against the frozen release manifest.
+3. WHEN hash mismatches are detected, THE Core Platform SHALL fail the verify-release job.
+
+### Requirement 12: Build Determinism
+
+**User Story:** As a quality engineer, I want deterministic builds, so that identical source produces identical artifacts.
+
+#### Acceptance Criteria
+
+1. THE Core Platform SHALL canonicalize build outputs with sorted triples and prefixes.
+2. THE Core Platform SHALL use deterministic blank node handling in build outputs.
+3. THE Core Platform SHALL pin serializer versions in build outputs.
+4. WHERE feasible, THE Core Platform SHALL run a double-build in CI and compare hashes to detect nondeterminism.
+
+### Requirement 13: Clean Working Tree
+
+**User Story:** As a maintainer, I want clean working trees after builds, so that derived artifacts do not pollute version control.
+
+#### Acceptance Criteria
+
+1. WHEN CI builds complete, THE Core Platform SHALL fail if the build modifies tracked files.
+2. WHEN CI builds complete, THE Core Platform SHALL fail if the build creates tracked files.
+3. THE Core Platform SHALL exclude derived artifacts via .gitignore.
+4. THE Core Platform SHALL keep derived artifacts untracked in version control.
+
+### Requirement 14: Pull Request Artifacts
+
+**User Story:** As a reviewer, I want to inspect derived artifacts in pull requests, so that I can verify changes without committing artifacts.
+
+#### Acceptance Criteria
+
+1. WHEN a pull request is created, THE Core Platform SHALL rebuild derived artifacts in CI.
+2. WHEN a pull request is created, THE Core Platform SHALL upload derived artifacts as CI artifacts.
+3. THE Core Platform SHALL NOT commit derived artifacts in pull requests.
+
+### Requirement 15: Output Policy Enforcement
+
+**User Story:** As a quality engineer, I want enforced output policies, so that releases meet quality and size requirements.
+
+#### Acceptance Criteria
+
+1. WHEN CI builds complete, THE Core Platform SHALL enforce presence of VoID or DCAT metadata.
+2. WHEN CI builds complete, THE Core Platform SHALL enforce presence of SHACL validation reports.
+3. WHERE configured, THE Core Platform SHALL enforce size budget thresholds on outputs.
+4. WHERE configured, THE Core Platform SHALL enforce row-count budget thresholds on outputs.
+5. WHEN policy violations are detected, THE Core Platform SHALL fail CI with a concise summary.
+
+### Requirement 16: Release Integrity Manifests
+
+**User Story:** As a security engineer, I want cryptographic manifests for releases, so that I can verify artifact integrity.
+
+#### Acceptance Criteria
+
+1. THE Core Platform SHALL include MANIFEST.sha256 file containing SHA-256 checksums in each release.
+2. WHERE feasible, THE Core Platform SHALL include MANIFEST.md5 file containing MD5 checksums in each release.
+3. WHEN verify-release task runs, THE Core Platform SHALL validate checksums against manifest files.
+
+### Requirement 17: Publication Safety
+
+**User Story:** As a release engineer, I want safe publication controls, so that only verified releases are published.
+
+#### Acceptance Criteria
+
+1. WHEN publishing releases, THE Core Platform SHALL publish only signed builds.
+2. WHEN publishing releases, THE Core Platform SHALL publish only tagged builds.
+3. WHEN publishing releases, THE Core Platform SHALL publish only builds that passed verification.
+4. THE Core Platform SHALL NOT publish artifacts from pull requests.
+
+### Requirement 18: CI Job Summary
+
+**User Story:** As a developer, I want human-friendly CI summaries, so that I can quickly understand build results.
+
+#### Acceptance Criteria
+
+1. WHEN CI builds complete, THE Core Platform SHALL emit a summary including artifact list.
+2. WHEN CI builds complete, THE Core Platform SHALL emit a summary including artifact sizes.
+3. WHEN CI builds complete, THE Core Platform SHALL emit a summary including SHACL validation status.
+4. WHERE configured, THE Core Platform SHALL emit a summary including policy budget metrics.
+
+## Acceptance
+
+- Both child specs reference this document for versioning, validation gates, config schema, and Cloudflare baseline controls.
+- A minimal sample project can consume the shared templates to produce a passing build without additional policy wiring.
+- Dashboards and alerts are uniformly defined and reusable across publishing and runtime deployments.
