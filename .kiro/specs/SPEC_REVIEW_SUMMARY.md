@@ -179,12 +179,138 @@ All specs are now ready for implementation. Developers can:
    - Tasks are actionable and properly sequenced
    - Property-based tests will validate correctness
 
+## Second Pass Improvements (2025-11-17)
+
+### 1. Completed Missing Design Documents
+
+Created comprehensive design documents for 4 incomplete specs:
+
+#### graphql-gateways (NEW)
+- **Properties Added**: 7 correctness properties
+- **Architecture**: HyperGraphQL and GraphQL-LD gateway components
+- **Key Features**: Content negotiation, entity lookup, pagination, property traversal
+- **Testing**: Property-based tests for connectivity, pagination, and multi-store configuration
+
+#### ontology-core-platform (NEW)
+- **Properties Added**: 10 correctness properties
+- **Architecture**: Versioning, validation gates, metadata, configuration, observability layers
+- **Key Features**: SemVer versioning, immutable releases, build determinism, manifest integrity
+- **Testing**: Property-based tests for versioning, metadata, configuration, and build processes
+
+#### ontology-publishing (NEW)
+- **Properties Added**: 10 correctness properties
+- **Architecture**: Cloudflare edge (CDN + Workers) + R2 storage
+- **Key Features**: Content negotiation, versioned paths, multiple formats, edge caching
+- **Testing**: Property-based tests for content negotiation, immutability, and caching
+
+#### ontology-runtime-queries (NEW)
+- **Properties Added**: 10 correctness properties
+- **Architecture**: Cloudflare Access + GraphQL Gateway + RDF Store (Fuseki/GraphDB)
+- **Key Features**: Authentication, resource limits, query caching, observability
+- **Testing**: Property-based tests for security, limits, caching, and performance
+
+**Total New Properties**: 37 correctness properties across 4 specs
+**Total New PBT Tasks**: 37 property-based test tasks
+
+### 2. Updated Task Lists with Implementation Status
+
+#### oss-rdf-sparql-qa-pipeline (~80% implemented)
+**Completed Tasks:**
+- ✅ SPARQL validation component (`tools/sparql_check.mjs`)
+- ✅ RDF validation workflow (`tools/validate_rdf.py`)
+- ✅ Security scanning (gitleaks, pip-audit)
+- ✅ CI workflow infrastructure (`.github/workflows/qa.yml`, `.github/workflows/ci.yml`)
+- ✅ Domain metrics validation (`tools/metrics_diversity.py`)
+- ✅ Local CI runner script (`tools/ci_local.sh`)
+- ✅ Helper scripts (`tools/install_gitleaks.sh`, `tools/fetch_jena.sh`)
+
+**Remaining Tasks:**
+- ⏳ rdflint validation step (deferred)
+- ⏳ SBOM scanning (Phase 2)
+- ⏳ Documentation updates
+- ⏳ Property-based tests (7 tests)
+
+#### graphql-gateways (~30% implemented)
+**Completed Tasks:**
+- ✅ HyperGraphQL configuration templates (`tools/gateways/hypergraphql/config.json`, `schema.graphql`)
+- ✅ Example schema with entity lookup, pagination, property access
+- ✅ HyperGraphQL documentation (`tools/gateways/hypergraphql/README.md`)
+
+**Remaining Tasks:**
+- ⏳ GraphQL-LD example implementation
+- ⏳ Credential management
+- ⏳ Multi-store configuration validation
+- ⏳ Comprehensive documentation
+- ⏳ Property-based tests (7 tests)
+
+#### ontology-core-platform (~40% implemented)
+**Completed Tasks:**
+- ✅ Release management system (`tools/release_freeze.py`)
+- ✅ Manifest generation and verification (`tools/verify-release.sh`)
+- ✅ Build pipeline (`tools/assemble.py`)
+- ✅ SHACL validation (`tools/validate.py`)
+- ✅ RDF validation (`tools/validate_rdf.py`)
+
+**Remaining Tasks:**
+- ⏳ Metadata generation (VoID/DCAT)
+- ⏳ Configuration schema implementation
+- ⏳ Cloudflare baseline documentation
+- ⏳ Observability standards implementation
+- ⏳ Build determinism enforcement
+- ⏳ Output policy enforcement
+- ⏳ Property-based tests (10 tests)
+
+### 3. Correctness Properties Summary
+
+**Total Correctness Properties Across All Specs**: 60
+
+**By Category:**
+- **Versioning & Releases**: 6 properties (SemVer, paths, immutability)
+- **Validation & Quality**: 8 properties (SHACL, RDF, SPARQL, manifests)
+- **Security & Access Control**: 9 properties (authentication, authorization, credentials)
+- **Performance & Caching**: 8 properties (latency, caching, compression)
+- **Data Integrity**: 7 properties (metadata, determinism, completeness)
+- **Resource Management**: 6 properties (limits, quotas, timeouts)
+- **Observability**: 5 properties (logging, metrics, auditing)
+- **Configuration**: 4 properties (env vars, multi-store, flexibility)
+- **Content Negotiation**: 3 properties (format routing, headers)
+- **Query Operations**: 4 properties (pagination, traversal, translation)
+
+### 4. Property-Based Testing Strategy
+
+**Testing Frameworks:**
+- **Python**: Hypothesis (for Python components)
+- **JavaScript/Node.js**: fast-check (for Workers and Node.js components)
+
+**Test Configuration:**
+- Minimum 100 iterations per property test
+- Random input generation for comprehensive coverage
+- Edge case handling via smart generators
+- Each test annotated with feature name, property number, and requirements
+
+**Test Organization:**
+- Co-located with source files (`.test.py`, `.test.mjs` suffixes)
+- Marked as optional with `*` suffix in task lists
+- Can be skipped for MVP, required for comprehensive validation
+
 ## Files Modified
 
-### Created
+### Created (Second Pass)
+- `.kiro/specs/graphql-gateways/design.md`
+- `.kiro/specs/ontology-core-platform/design.md`
+- `.kiro/specs/ontology-publishing/design.md`
+- `.kiro/specs/ontology-runtime-queries/design.md`
+- `.kiro/specs/ontology-runtime-queries/tasks.md`
+
+### Modified (Second Pass)
+- `.kiro/specs/graphql-gateways/tasks.md` (expanded with detailed tasks and PBT)
+- `.kiro/specs/ontology-core-platform/tasks.md` (expanded with detailed tasks and PBT)
+- `.kiro/specs/ontology-publishing/tasks.md` (expanded with detailed tasks and PBT)
+- `.kiro/specs/SPEC_REVIEW_SUMMARY.md` (this file - updated with second pass)
+
+### Created (First Pass)
 - `.kiro/specs/github-app-governance/design.md`
 - `.kiro/specs/github-app-governance/tasks.md`
-- `.kiro/specs/SPEC_REVIEW_SUMMARY.md` (this file)
 
 ### Modified
 - `.kiro/specs/cc-sdd-setup/design.md` (added Correctness Properties)
@@ -199,4 +325,123 @@ All specs are now ready for implementation. Developers can:
 - `.kiro/specs/ui-automation-playwright/design.md` (added Correctness Properties)
 - `.kiro/specs/ui-automation-playwright/tasks.md` (restructured, added property tests)
 
-**Total: 13 files modified/created**
+**First Pass Total**: 13 files modified/created
+**Second Pass Total**: 9 files created/modified
+**Grand Total**: 22 files created/modified
+
+## Implementation Roadmap
+
+### Immediate Priority (High Value, Partially Complete)
+
+1. **oss-rdf-sparql-qa-pipeline** (80% done)
+   - Complete remaining documentation
+   - Add property-based tests
+   - Consider rdflint integration
+
+2. **ontology-core-platform** (40% done)
+   - Complete metadata generation (VoID/DCAT)
+   - Implement configuration schema
+   - Add observability standards
+   - Enforce build determinism
+
+3. **graphql-gateways** (30% done)
+   - Complete GraphQL-LD implementation
+   - Add credential management
+   - Validate multi-store configuration
+
+### Medium Priority (Foundation for Other Specs)
+
+4. **ontology-publishing** (not started, depends on core-platform)
+   - Implement Cloudflare Worker for content negotiation
+   - Set up R2 storage and CI automation
+   - Generate multiple formats (JSON-LD, pyLODE HTML)
+
+5. **ontology-runtime-queries** (not started, depends on core-platform + gateways)
+   - Deploy Fuseki with TDB2
+   - Configure Cloudflare Access and security
+   - Implement resource limits and caching
+
+### Lower Priority (Infrastructure & Governance)
+
+6. **cc-sdd-setup** (not started)
+7. **developer-environment-docker-desktop** (not started)
+8. **github-app-governance** (not started)
+9. **ui-automation-playwright** (not started)
+
+## Key Achievements
+
+### Completeness
+- ✅ All 9 specs have complete requirements documents (EARS/INCOSE compliant)
+- ✅ All 9 specs have complete design documents with correctness properties
+- ✅ All 9 specs have complete task lists with property-based test tasks
+- ✅ 60 total correctness properties defined across all specs
+- ✅ 63 total property-based test tasks defined
+
+### Quality
+- ✅ All requirements follow EARS patterns (WHEN/THE/SHALL, IF/THEN, WHERE, WHILE)
+- ✅ All specs have Introduction and Glossary sections
+- ✅ All correctness properties use "for all" quantification
+- ✅ All properties reference specific requirements
+- ✅ All tasks reference specific requirements
+- ✅ Property-based testing strategy defined for all specs
+
+### Traceability
+- ✅ Requirements → Design → Tasks → Tests fully traceable
+- ✅ Each property validates specific requirements
+- ✅ Each task implements specific requirements
+- ✅ Each test validates specific properties
+
+### Implementation Status
+- ✅ 3 specs have significant implementation (30-80% complete)
+- ✅ Core validation pipeline operational (CI/CD working)
+- ✅ Gateway templates available (HyperGraphQL)
+- ✅ Build and release tooling functional
+
+## Recommendations
+
+### For Immediate Action
+
+1. **Complete QA Pipeline**: Finish the remaining 20% of oss-rdf-sparql-qa-pipeline
+   - High value, nearly complete
+   - Unblocks quality gates for all other work
+
+2. **Finish Core Platform**: Complete ontology-core-platform to 100%
+   - Foundation for publishing and runtime specs
+   - Provides shared standards and tooling
+
+3. **Add Property-Based Tests**: Start with high-value properties
+   - Focus on validation, versioning, and security properties
+   - Use Hypothesis (Python) and fast-check (JavaScript)
+
+### For Medium-Term Planning
+
+4. **Implement Publishing Pipeline**: Complete ontology-publishing
+   - Enables public consumption of ontologies
+   - Provides stable URIs and content negotiation
+
+5. **Deploy Runtime Queries**: Complete ontology-runtime-queries
+   - Enables internal tooling and applications
+   - Provides controlled query access
+
+### For Long-Term Maintenance
+
+6. **Continuous Improvement**: Iterate on specs as implementation reveals gaps
+   - Update requirements based on real-world usage
+   - Refine properties based on test findings
+   - Enhance documentation based on user feedback
+
+## Conclusion
+
+All 9 specifications are now complete and ready for implementation. The specs follow a rigorous spec-driven development methodology with:
+
+- Formal requirements (EARS/INCOSE compliant)
+- Comprehensive designs with correctness properties
+- Detailed implementation plans with property-based testing
+- Full traceability from requirements to tests
+
+The workspace has a solid foundation for building correct, well-tested ontology platform capabilities. Implementation can proceed with confidence that requirements are well-defined, designs are sound, and testing strategies are comprehensive.
+
+**Total Files**: 22 created/modified
+**Total Properties**: 60 correctness properties
+**Total PBT Tasks**: 63 property-based test tasks
+**Total Specs**: 9 complete specifications
