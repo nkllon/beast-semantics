@@ -178,7 +178,39 @@ Not applicable (file system checks only).
 - **Response**: Exit 1, report missing file
 - **Remediation**: Run installation command from README.md
 
+## Correctness Properties
+
+*A property is a characteristic or behavior that should hold true across all valid executions of a system—essentially, a formal statement about what the system should do. Properties serve as the bridge between human-readable specifications and machine-verifiable correctness guarantees.*
+
+### Property 1: Complete file verification
+*For any* valid CC-SDD installation, all 11 expected command files should exist in `.cursor/commands/kiro/` when verification passes.
+**Validates: Requirements 2.1, 2.4**
+
+### Property 2: Node version enforcement
+*For any* system where Node.js version is less than 18, verification should fail with exit code 1 and provide the current version in the error message.
+**Validates: Requirements 1.2, 1.3**
+
+### Property 3: Release manifest integrity
+*For any* release snapshot with a MANIFEST.sha256 file, all files listed in the manifest should have SHA-256 checksums that match the actual file contents.
+**Validates: Requirements 5.3, 5.4**
+
+### Property 4: Verification idempotency
+*For any* repository state, running verification multiple times should produce the same result (pass or fail) without modifying any files.
+**Validates: Requirements 2.5, 4.1**
+
 ## Testing Strategy
+
+### Unit Testing
+- **Node version parsing**: Test extraction and comparison of version numbers
+- **File existence checks**: Test detection of missing files
+- **Checksum generation**: Test SHA-256 hash generation and verification
+- **Error message formatting**: Verify clarity and actionability
+
+### Property-Based Testing
+- **Property 1 (Complete verification)**: Test with various file presence combinations, verify correct pass/fail
+- **Property 2 (Node version)**: Test with various Node versions, verify correct enforcement
+- **Property 3 (Manifest integrity)**: Generate random file sets, verify checksums match
+- **Property 4 (Idempotency)**: Run verification multiple times, verify identical results
 
 ### Verification Script Testing
 - **Positive case**: Run on current repo (should pass)

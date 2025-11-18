@@ -77,4 +77,26 @@
     - Confirm troubleshooting guidance is clear
     - _Requirements: R1.1, R3.1, R4.4_
 
+- [ ]* 5. Property-based testing
+  - [ ]* 5.1 Write property test for complete file verification
+    - **Property 1: Complete file verification**
+    - **Validates: Requirements 2.1, 2.4**
+
+  - [ ]* 5.2 Write property test for Node version enforcement
+    - **Property 2: Node version enforcement**
+    - **Validates: Requirements 1.2, 1.3**
+
+  - [ ]* 5.3 Write property test for release manifest integrity
+    - **Property 3: Release manifest integrity**
+    - **Validates: Requirements 5.3, 5.4**
+
+  - [ ]* 5.4 Write property test for verification idempotency
+    - **Property 4: Verification idempotency**
+    - **Validates: Requirements 2.5, 4.1**
+
+  - [ ]* 5.5 Run all property-based tests
+    - Execute all property tests with 100+ iterations
+    - Verify all properties hold across random inputs
+    - Fix any discovered edge cases
+
 

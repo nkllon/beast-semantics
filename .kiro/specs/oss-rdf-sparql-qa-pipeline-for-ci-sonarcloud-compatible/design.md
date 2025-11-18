@@ -126,12 +126,48 @@ Augment CI with OSS validators for RDF/TTL/SPARQL and security gates while keepi
 - Overall job timeout: 15 minutes
 - On timeout: Fail job with partial results
 
+## Correctness Properties
+
+*A property is a characteristic or behavior that should hold true across all valid executions of a system—essentially, a formal statement about what the system should do. Properties serve as the bridge between human-readable specifications and machine-verifiable correctness guarantees.*
+
+### Property 1: Error-level findings fail the job
+*For any* CI execution where RIOT, SPARQL parser, gitleaks, or pip-audit detects error-level findings, the CI job should exit with non-zero status.
+**Validates: Requirements 4.1, 4.4, 6.1, 6.2**
+
+### Property 2: Warning-level findings pass the job
+*For any* CI execution where only warning-level findings exist (SPARQL formatting, rdflint style), the CI job should exit with zero status.
+**Validates: Requirements 4.3, 4.5**
+
+### Property 3: File coverage completeness
+*For any* repository state, the CI pipeline should validate all `.ttl` files in ontology/shapes/mappings/build directories and all `.rq` files in queries directory.
+**Validates: Requirements 3.1, 3.2**
+
+### Property 4: Annotation completeness
+*For any* validation finding (error or warning), the CI output should include file path, line number, and column number.
+**Validates: Requirements 9.2**
+
+### Property 5: Performance bounds
+*For any* CI execution with typical file counts, the validation jobs should complete within 7 minutes (95th percentile).
+**Validates: Requirements 2.1**
+
+### Property 6: Tool licensing compliance
+*For any* tool invoked by the CI pipeline, the tool should have an OSI-approved license or be organization-approved.
+**Validates: Requirements 1.1, 1.2**
+
 ## Testing Strategy
 
 ### Unit Testing
 - **SPARQL checker**: Test with valid/invalid/malformed `.rq` files
 - **Validation scripts**: Test exit codes and output formats
 - **Mock files**: Create minimal test fixtures for each file type
+
+### Property-Based Testing
+- **Property 1 (Error failures)**: Generate files with various error types, verify job fails
+- **Property 2 (Warning passes)**: Generate files with only warnings, verify job passes
+- **Property 3 (File coverage)**: Generate random file sets, verify all are validated
+- **Property 4 (Annotation completeness)**: Generate findings, verify all have file/line/col
+- **Property 5 (Performance)**: Run with various file counts, verify time bounds
+- **Property 6 (Licensing)**: Audit all tools, verify OSI compliance
 
 ### Integration Testing
 - **CI workflow**: Test with sample PRs containing known issues
