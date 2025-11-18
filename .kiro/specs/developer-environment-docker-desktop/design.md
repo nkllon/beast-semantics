@@ -1,61 +1,59 @@
-# Design — Developer Environment: Docker Desktop
+# Design Document
 
-## Purpose
-Establish Docker Desktop as the standard local container runtime and orchestration layer for development on macOS. Define the minimal capabilities, verification steps, and how project tooling integrates with Docker and Compose.
+## Overview
+Augment CI with OSS validators for RDF/TTL/SPARQL and security gates while keeping SonarCloud as the PR quality gate. Provide fast feedback, clear signals, and vendor-agnostic checks.
 
-## Capabilities
-- Docker Engine API and BuildKit for efficient builds.
-- Docker Compose v2 for multi-service orchestration.
-- Buildx for cross-platform builds when needed.
-- Local image registry auth passthrough.
-- Volumes and bridged networking for services.
+## Architecture
+- CI runner: GitHub Actions
+- Languages/tools:
+  - RDF/Turtle validation: Apache Jena RIOT (Apache-2.0)
+  - RDF lint rules: rdflint (Apache-2.0)
+  - SPARQL parse/format: sparqljs + sparql-formatter (MIT)
+  - Secrets scanning: gitleaks (MIT, GitHub Action)
+  - Python SCA: pip-audit (Apache-2.0)
+  - (Optional Phase 2) SBOM + scan: CycloneDX + Trivy/Grype
 
-## Integration
-- Prefer repository-provided `docker-compose.yml` files under `tools/` or service directories.
-- Commands are scripted in `tools/` where possible to avoid drift.
-- Verification script (optional) under `tools/verify-docker.sh` to check versions and features.
+## File Coverage
+- RDF/Turtle family:
+  - `ontology/**/*.ttl`, `shapes/**/*.ttl`, `mappings/**/*.ttl`, `build/**/*.ttl`
+  - (Also allow TriG/N-Triples/N-Quads where present)
+- SPARQL:
+  - `queries/**/*.rq`
 
-## Versioning
-- Minimum Docker Desktop version: 4.x (Engine >= 24, Compose v2).
-- Apple Silicon support validated.
+## CI Workflow Additions (implemented)
+1) Setup runtimes
+   - Java via actions/setup-java (Temurin 21)
+   - Node via actions/setup-node (Node 20, npm cache)
+2) SPARQL tools
+   - Install `sparqljs`, `sparql-formatter` (global)
+   - Run `tools/sparql_check.mjs queries` (parse errors fail; formatting warns by default; set `ENFORCE_SPQ_FORMAT=true` to enforce)
+3) RDF validation
+   - Install Apache Jena RIOT; run `riot --validate` per file across ontology/shapes/mappings/build; any error fails
+4) RDF lint
+   - Download `rdflint` fat JAR; run defaults; non-zero exit fails; style remains warnings within tool output
+5) Security/compliance
+   - Secrets: `gitleaks/gitleaks-action@v2` with `--redact` (fail on findings)
+   - Python SCA: `pip-audit --strict` over `requirements.txt` (fail on High/Critical, CVSS ≥ 7)
 
-## Determinism
-- If Docker Desktop is not present/running, all containerized workflows fail fast with a clear message directing to requirements.
+## Severity Mapping
+- Errors (fail job):
+  - RIOT validation errors; SPARQL parse errors; gitleaks findings; High/Critical in pip-audit
+- Warnings (do not fail initially):
+  - SPARQL formatting drift; rdflint style-level findings
+- Toggle:
+  - Set `ENFORCE_SPQ_FORMAT=true` to elevate SPARQL formatting to error
 
-## MCP Integration (Optional)
-- Document how to enable Docker Desktop MCPs and verify Playwright MCP availability.
-- Provide a simple wrapper to invoke the Playwright MCP with bind-mounted workspace and env secrets, aligning artifacts under `build/`.
+## Performance & Caching
+- actions/setup-node cache: npm
+- Minimize downloads; per-file RIOT validation to localize failures
+- Expected overhead: ≤ 3–4 minutes typical
 
-## Correctness Properties
+## Configuration (optional, future)
+- `.gitleaks.toml` for allowlist only when necessary
+- `.rdflint.yml` for custom rules/vocabulary checks
+- Minimal, reviewed ignore list for pip-audit
 
-*A property is a characteristic or behavior that should hold true across all valid executions of a system—essentially, a formal statement about what the system should do. Properties serve as the bridge between human-readable specifications and machine-verifiable correctness guarantees.*
-
-### Property 1: Version requirement satisfaction
-*For any* Docker Desktop installation that passes verification, the Docker Engine version should be >= 24 and Compose should be v2.
-**Validates: Requirements 4.1, 4.2, 4.3**
-
-### Property 2: CLI command availability
-*For any* verified Docker Desktop installation, the commands `docker`, `docker compose`, and `docker buildx` should all be executable and return version information.
-**Validates: Requirements 2.1, 2.2, 2.3, 3.1, 3.2**
-
-### Property 3: Fail-fast on unavailability
-*For any* system where Docker Desktop is not running, verification should fail with exit code non-zero and provide a clear error message.
-**Validates: Requirements 8.1, 8.2, 8.3**
-
-## Testing Strategy
-
-### Unit Testing
-- **Version parsing**: Test extraction of version numbers from CLI output
-- **Command availability**: Test detection of missing Docker commands
-- **Error messages**: Verify clarity and actionability of failure messages
-
-### Property-Based Testing
-- **Property 1 (Version requirements)**: Run verification on systems with various Docker versions, verify correct pass/fail
-- **Property 2 (CLI availability)**: Test with various PATH configurations, verify all required commands detected
-- **Property 3 (Fail-fast)**: Simulate Docker Desktop stopped/missing, verify appropriate failure
-
-### Integration Testing
-- **Fresh installation**: Test verification on newly installed Docker Desktop
-- **Compose files**: Test sample multi-container setup with provided Compose files
-- **MCP detection**: Test MCP presence detection when available
-
+## Out of Scope
+- Building SonarQube plugins
+- Replacing SonarCloud
+- IDE-specific plugins
