@@ -24,4 +24,20 @@
 - Prefer external OSS linters and validators wired into CI (via reviewdog) over server-side plugins.
 - Maintain an exit path to an OSS-only pipeline with equivalent PR gates if SonarCloud’s free-OSS terms change.
 
+## Tooling Policy (Authoritative)
+- Use the Tool Selection Matrix in `AGENTS.md` as the source of truth for which tool to use.
+- Prefer `gh` for GitHub operations; use `gh api` for endpoints not covered by high-level commands.
+- Use `git` for repository operations; do not reimplement git behavior via APIs.
+- Use repo-provided scripts under `tools/` instead of duplicating logic in new scripts or workflows.
+- Do not “discover” or propose installing alternative tools unless requirements explicitly direct it.
+
+## Requirements-First Execution (Fail-Fast)
+- Requirements/specs are the operational source of truth. If a tool is specified, assume it is installed and use it.
+- If a tool appears unavailable at runtime, fail fast and flag a missing or outdated requirement; do not invent a workaround.
+- Follow designs/tasks as documented in `.kiro/specs/**`; deviations must be addressed by updating the spec, not by ad-hoc changes.
+
+## External Sources Registry
+- Agents may read external directories when `${FORT_DESKTOP}` is set, when an explicit absolute path is provided by the user, or when listed in `.kiro/steering-custom/external-sources.md`.
+- If no path is provided and `${FORT_DESKTOP}` is unset, request it; add paths to the registry after use for reuse/audit. Do not attempt discovery outside explicit user input or the registry.
+
 

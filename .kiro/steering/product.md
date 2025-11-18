@@ -35,4 +35,13 @@
    - Enforce domain metrics thresholds (e.g., `tools/metrics_diversity.py`)
 2) Optionally evaluate SonarQube Community strictly as a viewer for main-branch trends (no PR decoration) if needed; do not invest in custom plugins.
 
+## Requirements-First & Deterministic Execution
+- Requirements/specs are the solution. If they declare a tool or flow, assume it is installed/available and execute accordingly.
+- If runtime indicates a missing tool, fail fast and report a missing requirement/design task; do not introduce substitutes or “discover” alternatives.
+- Agents must not create tools where approved tools exist (see `AGENTS.md` Tool Selection Matrix and repository `tools/`).
+- All deviations require updating requirements/design/tasks first; implementations must be derivable from approved specs.
+
+## External Sources Registry
+- External assets should be recorded in `.kiro/steering-custom/external-sources.md` with absolute paths (or `${FORT_DESKTOP}`) and constraints for reuse/audit.
+- If the user supplies an explicit absolute path, proceed immediately and record it afterward; if no path is provided, stop and request it. Prefer `${FORT_DESKTOP}` for per-host portability.
 
