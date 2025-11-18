@@ -48,12 +48,10 @@ jobs:
         with:
           node-version: "20"
           cache: npm
-
-      - name: Install SPARQL tools (global)
+      
+      - name: Install Node dependencies
         run: |
-          npm install -g --no-fund --no-audit \
-            sparqljs@3.7.3 \
-            sparql-formatter@3.1.0
+          npm ci --no-fund --no-audit
 
       - name: SPARQL validation (parse + format)
         run: |

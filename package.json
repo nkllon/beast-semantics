@@ -1,0 +1,13 @@
+{
+  "name": "beast-semantics",
+  "version": "0.0.0",
+  "private": true,
+  "devDependencies": {
+    "sparql-formatter": "1.0.2",
+    "sparqljs": "3.7.3"
+  },
+  "scripts": {
+    "check:sparql": "node tools/sparql_check.mjs queries"
+  }
+}
+
