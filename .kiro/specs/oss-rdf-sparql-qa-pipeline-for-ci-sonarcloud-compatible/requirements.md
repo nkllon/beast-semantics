@@ -3,71 +3,107 @@
 ## Introduction
 Add open-source, actively maintained RDF/TTL/SPARQL lint/validation and security gates to CI while retaining SonarCloud as the PR quality gate with clear, actionable annotations.
 
+## Glossary
+
+- **CI Pipeline**: The continuous integration system implemented via GitHub Actions that validates code changes
+- **RIOT**: Apache Jena's RDF I/O Technology validator for RDF/Turtle syntax validation
+- **rdflint**: An open-source RDF linting tool that checks structural and style issues in RDF files
+- **SPARQL Parser**: The sparqljs-based tool that validates SPARQL query syntax
+- **gitleaks**: An open-source secrets scanning tool that detects hardcoded credentials
+- **pip-audit**: A Python dependency security scanner that identifies known vulnerabilities
+- **reviewdog**: A code review automation tool that posts inline PR comments
+- **metrics_diversity**: A domain-specific validation tool that measures diversity metrics
+- **OSI-licensed**: Software licensed under an Open Source Initiative approved license
+- **CVSS**: Common Vulnerability Scoring System, a standardized vulnerability severity rating
+- **SBOM**: Software Bill of Materials, an inventory of software components
+
 ## Requirements
 
 ### Requirement 1: Licensing and Posture
-**Objective:** As a maintainer, I want all added tools to be OSI-licensed and vendor-agnostic so that our pipeline remains sustainable and forkable.
+
+**User Story:** As a maintainer, I want all added tools to be OSI-licensed and vendor-agnostic so that our pipeline remains sustainable and forkable.
 
 #### Acceptance Criteria
-1. WHEN CI runs THEN only OSI-licensed tools are invoked.
-2. IF a proprietary tool is proposed THEN it SHALL be rejected unless already org-approved (e.g., SonarCloud).
+
+1. WHEN THE CI Pipeline executes, THE CI Pipeline SHALL invoke only OSI-licensed tools.
+2. IF a proprietary tool is proposed, THEN THE CI Pipeline SHALL reject the tool unless the tool is organization-approved.
 
 ### Requirement 2: CI Environment
-**Objective:** As a contributor, I want a fast CI so that feedback is timely.
+
+**User Story:** As a contributor, I want a fast CI so that feedback is timely.
 
 #### Acceptance Criteria
-1. WHEN the added jobs run THEN total runtime SHALL be ≤ 5 min average and ≤ 7 min P95.
-2. WHEN dependencies are installed THEN caches SHALL be used for Node/Java where applicable.
+
+1. WHEN THE CI Pipeline executes the validation jobs, THE CI Pipeline SHALL complete within 5 minutes average runtime and within 7 minutes for 95th percentile runtime.
+2. WHEN THE CI Pipeline installs dependencies, THE CI Pipeline SHALL use caching for Node and Java dependencies.
 
 ### Requirement 3: File Coverage
-**Objective:** As a reviewer, I want RDF and SPARQL files checked so that defects are caught at PR time.
+
+**User Story:** As a reviewer, I want RDF and SPARQL files checked so that defects are caught at PR time.
 
 #### Acceptance Criteria
-1. WHEN CI runs THEN validate `ontology/**/*.ttl`, `shapes/**/*.ttl`, `mappings/**/*.ttl`, `build/**/*.ttl`.
-2. WHEN CI runs THEN parse and analyze `queries/**/*.rq`.
+
+1. WHEN THE CI Pipeline executes, THE CI Pipeline SHALL validate all Turtle files in the ontology, shapes, mappings, and build directories.
+2. WHEN THE CI Pipeline executes, THE CI Pipeline SHALL parse and analyze all SPARQL query files in the queries directory.
 
 ### Requirement 4: Validators and Linters
-**Objective:** As a maintainer, I want reliable validation so that syntax and structural issues fail fast.
+
+**User Story:** As a maintainer, I want reliable validation so that syntax and structural issues fail fast.
 
 #### Acceptance Criteria
-1. WHEN RIOT validates TTL-family files THEN any error SHALL fail the job.
-2. WHEN rdflint runs THEN Fatal/Error SHALL mark errors; style SHALL be warnings initially.
-3. WHEN SPARQL is parsed (sparqljs/analyzer) THEN parse errors SHALL fail; formatting differences SHALL warn initially.
+
+1. WHEN RIOT detects a validation error in Turtle files, THEN THE CI Pipeline SHALL fail the validation job.
+2. WHEN rdflint detects Fatal or Error level findings, THEN THE CI Pipeline SHALL fail the validation job.
+3. WHEN rdflint detects style-level findings, THEN THE CI Pipeline SHALL report warnings without failing the validation job.
+4. WHEN THE SPARQL Parser detects parse errors, THEN THE CI Pipeline SHALL fail the validation job.
+5. WHEN THE SPARQL Parser detects formatting differences, THEN THE CI Pipeline SHALL report warnings without failing the validation job.
 
 ### Requirement 5: PR Ergonomics
-**Objective:** As a reviewer, I want inline comments so that I can fix issues in-context.
+
+**User Story:** As a reviewer, I want inline comments so that I can fix issues in-context.
 
 #### Acceptance Criteria
-1. WHEN diagnostics are produced THEN reviewdog SHALL annotate PRs.
-2. WHEN errors occur THEN `github-pr-check` SHALL report failure; warnings SHALL not fail.
+
+1. WHEN THE CI Pipeline produces diagnostics, THEN reviewdog SHALL create inline PR annotations.
+2. WHEN THE CI Pipeline detects errors, THEN THE CI Pipeline SHALL report failure status via github-pr-check.
+3. WHEN THE CI Pipeline detects warnings, THEN THE CI Pipeline SHALL report success status via github-pr-check.
 
 ### Requirement 6: Security and Compliance
-**Objective:** As a security steward, I want secrets and high/critical CVEs blocked so that we minimize risk.
+
+**User Story:** As a security steward, I want secrets and high/critical CVEs blocked so that we minimize risk.
 
 #### Acceptance Criteria
-1. WHEN gitleaks finds a secret THEN the job SHALL fail.
-2. WHEN pip-audit detects High/Critical (CVSS ≥ 7.0) THEN the job SHALL fail.
-3. WHEN SBOM scanning is enabled (Phase 2) THEN Critical findings SHALL fail once policy is approved.
+
+1. WHEN gitleaks detects a secret, THEN THE CI Pipeline SHALL fail the security job.
+2. WHEN pip-audit detects vulnerabilities with CVSS score greater than or equal to 7.0, THEN THE CI Pipeline SHALL fail the security job.
+3. WHERE SBOM scanning is enabled, WHEN THE CI Pipeline detects Critical findings, THEN THE CI Pipeline SHALL fail the security job.
 
 ### Requirement 7: Domain Policy
-**Objective:** As a project owner, I want domain metrics enforced so that regressions are prevented.
+
+**User Story:** As a project owner, I want domain metrics enforced so that regressions are prevented.
 
 #### Acceptance Criteria
-1. WHEN metrics_diversity runs THEN any regression vs `main` SHALL fail unless threshold is explicitly adjusted.
+
+1. WHEN metrics_diversity detects a regression compared to the main branch, THEN THE CI Pipeline SHALL fail the validation job unless the threshold has been explicitly adjusted.
 
 ### Requirement 8: Reproducibility
-**Objective:** As a maintainer, I want deterministic builds so that results are repeatable.
+
+**User Story:** As a maintainer, I want deterministic builds so that results are repeatable.
 
 #### Acceptance Criteria
-1. WHEN actions run THEN pinned versions SHALL be used and no external secrets are required beyond `${{ secrets.GITHUB_TOKEN }}`.
-2. WHEN Node tools run THEN use `--no-fund --no-audit`.
+
+1. WHEN THE CI Pipeline executes GitHub Actions, THE CI Pipeline SHALL use pinned versions for all tools and dependencies.
+2. WHEN THE CI Pipeline executes GitHub Actions, THE CI Pipeline SHALL require no external secrets beyond the GitHub token.
+3. WHEN THE CI Pipeline executes Node tools, THE CI Pipeline SHALL use the --no-fund and --no-audit flags.
 
 ### Requirement 9: Outputs
-**Objective:** As a contributor, I want clear signals so that I can act quickly.
+
+**User Story:** As a contributor, I want clear signals so that I can act quickly.
 
 #### Acceptance Criteria
-1. WHEN CI completes THEN a concise pass/fail summary SHALL be present.
-2. WHEN annotations occur THEN they SHALL reference file and line/column.
+
+1. WHEN THE CI Pipeline completes execution, THE CI Pipeline SHALL display a concise pass or fail summary.
+2. WHEN THE CI Pipeline creates annotations, THE CI Pipeline SHALL include file path, line number, and column number in each annotation.
 
 ### Out of Scope
 - Building SonarQube plugins
