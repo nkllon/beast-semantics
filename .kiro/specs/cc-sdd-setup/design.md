@@ -110,6 +110,7 @@ Verification Script (tools/verify-cc-sdd.sh)
 - R2 Installation state verified → Verification script checks
 - R3 Setup reproducibility ensured → Documented CLI command and refresh procedure
 - R4 Verification automation available → `tools/verify-cc-sdd.sh` script
+- R5 Release immutability → `tools/release-freeze.sh` script and `--release` verification mode
 
 ## Components and Interfaces
 
