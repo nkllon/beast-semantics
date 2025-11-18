@@ -64,4 +64,8 @@ apache-jena-*/
 # Local tool binaries
 tools/bin/
 
+# Generated build artifacts (not versioned)
+/build/words-v1.ttl
+/build/shacl-report.txt
+
 
