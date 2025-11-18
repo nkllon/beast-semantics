@@ -16,6 +16,9 @@ Quick start
 3) Load to GraphDB (env GRAPHDB_URL, REPO_ID)
    - ./graphdb/load.sh build/lemon-kg.ttl
 
+See also
+- Specs overview and env mapping: `docs/specs-overview.md`
+
 ## Using bundled cc-sdd (local, no upstream changes)
 
 Prereqs: Node 18+
