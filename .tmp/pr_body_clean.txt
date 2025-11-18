@@ -1,6 +1,0 @@
-- **feat(kiro): add cc-sdd-setup spec (requirements, design, tasks)**
-- **refactor(spec): refine cc-sdd-setup spec - focus on verification and documentation**
-- **docs(kiro): explicit command list; add verify script; README verification; approve spec for implementation**
-- **release: add dual-hash freeze/verify, label; SBOM generation; README release docs**
-- **release: dual-hash fixes; SBOM generator wiring; spec R5 immutability; update verify scripts**
-
