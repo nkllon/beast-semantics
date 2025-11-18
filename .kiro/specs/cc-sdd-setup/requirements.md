@@ -18,10 +18,10 @@ This specification defines the verification and documentation of the CC-SDD (Kir
 
 #### Acceptance Criteria
 
-1. WHEN a developer reads setup documentation, THE Setup Documentation SHALL clearly state the Node.js 18+ requirement.
-2. WHEN a developer runs verification, THE Verification System SHALL check Node version and report pass/fail.
-3. IF Node is below required version, THEN THE Verification System SHALL fail with actionable remediation steps.
-4. WHERE multiple developers use the repository, THE Setup Documentation SHALL be located in a discoverable location.
+1. THE Setup Documentation SHALL state the Node.js 18 or higher requirement.
+2. WHEN a developer runs verification, THE Verification System SHALL check Node version and report pass or fail status.
+3. IF Node version is below 18, THEN THE Verification System SHALL fail with remediation steps.
+4. WHERE multiple developers use the repository, THE Setup Documentation SHALL be located in the repository root directory.
 
 ### Requirement 2: Installation state verified
 
@@ -29,22 +29,11 @@ This specification defines the verification and documentation of the CC-SDD (Kir
 
 #### Acceptance Criteria
 
-1. WHEN verification runs, THE Verification System SHALL confirm `.cursor/commands/kiro/*` commands exist (11 expected files):
-   - `spec-design.md`
-   - `spec-impl.md`
-   - `spec-init.md`
-   - `spec-requirements.md`
-   - `spec-status.md`
-   - `spec-tasks.md`
-   - `steering-custom.md`
-   - `steering.md`
-   - `validate-design.md`
-   - `validate-gap.md`
-   - `validate-impl.md`
-2. WHEN verification runs, THE Verification System SHALL confirm `.kiro/settings/*` structure exists (rules and templates).
-3. WHEN verification runs, THE Verification System SHALL confirm `AGENTS.md` exists with CC-SDD guidance.
-4. IF any expected component is missing, THEN THE Verification System SHALL report specific missing items.
-5. WHEN verification passes, THE Verification System SHALL output a success summary.
+1. WHEN verification runs, THE Verification System SHALL confirm 11 command files exist in `.cursor/commands/kiro/` directory: spec-design.md, spec-impl.md, spec-init.md, spec-requirements.md, spec-status.md, spec-tasks.md, steering-custom.md, steering.md, validate-design.md, validate-gap.md, and validate-impl.md.
+2. WHEN verification runs, THE Verification System SHALL confirm `.kiro/settings/` directory structure exists with rules and templates.
+3. WHEN verification runs, THE Verification System SHALL confirm AGENTS.md file exists in repository root.
+4. IF any expected component is missing, THEN THE Verification System SHALL report the specific missing component names.
+5. WHEN verification passes, THE Verification System SHALL output a success summary message.
 
 ### Requirement 3: Setup reproducibility ensured
 
@@ -52,10 +41,10 @@ This specification defines the verification and documentation of the CC-SDD (Kir
 
 #### Acceptance Criteria
 
-1. WHEN a developer needs to install or refresh, THE Setup Documentation SHALL provide the exact CLI command.
-2. WHEN the CLI command is documented, THE Setup Documentation SHALL include all necessary flags (`--agent`, `--profile`, `--yes`, `--overwrite`, `--backup`).
-3. WHEN a developer needs to update the vendor snapshot, THE Setup Documentation SHALL provide the rsync commands.
-4. WHERE setup instructions exist, THE Setup Documentation SHALL emphasize local-only operation with no global side-effects.
+1. THE Setup Documentation SHALL provide the exact CLI command for installation or refresh operations.
+2. THE Setup Documentation SHALL include all necessary flags: --agent, --profile, --yes, --overwrite, and --backup.
+3. THE Setup Documentation SHALL provide rsync commands for updating the vendor snapshot.
+4. WHERE setup instructions exist, THE Setup Documentation SHALL document that operations are local-only with no global side-effects.
 
 ### Requirement 4: Verification automation available
 
@@ -74,10 +63,10 @@ This specification defines the verification and documentation of the CC-SDD (Kir
 
 #### Acceptance Criteria
 
-1. WHEN a release is created, THE Release Snapshot SHALL be produced at `build/releases/<version>/`.
-2. WHEN the snapshot is produced, THE Release Snapshot SHALL include at minimum: `AGENTS.md`, `README.md`, `.cursor/commands/kiro/**`, `.kiro/settings/**`, and `tools/**`.
-3. WHEN the snapshot is produced, THE Release Snapshot SHALL include a `MANIFEST.sha256` generated over all files in the snapshot.
-4. WHEN verification runs with a `--release <version>` argument, THE Verification System SHALL verify that the snapshot exists and that all files match the checksums in `MANIFEST.sha256`.
-5. WHERE version control workflows are used, THE Setup Documentation SHALL describe creating and pushing a git tag for the release version.
+1. WHEN a release is created, THE Release Snapshot SHALL be produced in build/releases/version-number/ directory.
+2. THE Release Snapshot SHALL include AGENTS.md, README.md, .cursor/commands/kiro/ contents, .kiro/settings/ contents, and tools/ contents.
+3. THE Release Snapshot SHALL include a MANIFEST.sha256 file generated over all files in the snapshot.
+4. WHEN verification runs with --release version-number argument, THE Verification System SHALL verify snapshot existence and checksum matches for all files in MANIFEST.sha256.
+5. WHERE version control workflows are used, THE Setup Documentation SHALL describe git tag creation and push procedures for release versions.
 
 

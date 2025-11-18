@@ -25,8 +25,8 @@ Add open-source, actively maintained RDF/TTL/SPARQL lint/validation and security
 
 #### Acceptance Criteria
 
-1. WHEN THE CI Pipeline executes, THE CI Pipeline SHALL invoke only OSI-licensed tools.
-2. IF a proprietary tool is proposed, THEN THE CI Pipeline SHALL reject the tool unless the tool is organization-approved.
+1. THE CI Pipeline SHALL invoke only OSI-licensed tools.
+2. IF a proprietary tool is proposed, THEN THE CI Pipeline SHALL reject the proprietary tool unless organization approval exists.
 
 ### Requirement 2: CI Environment
 
@@ -34,8 +34,9 @@ Add open-source, actively maintained RDF/TTL/SPARQL lint/validation and security
 
 #### Acceptance Criteria
 
-1. WHEN THE CI Pipeline executes the validation jobs, THE CI Pipeline SHALL complete within 5 minutes average runtime and within 7 minutes for 95th percentile runtime.
-2. WHEN THE CI Pipeline installs dependencies, THE CI Pipeline SHALL use caching for Node and Java dependencies.
+1. THE CI Pipeline SHALL complete validation jobs within 5 minutes average runtime.
+2. THE CI Pipeline SHALL complete validation jobs within 7 minutes for 95th percentile runtime.
+3. WHEN THE CI Pipeline installs dependencies, THE CI Pipeline SHALL use caching for Node dependencies and Java dependencies.
 
 ### Requirement 3: File Coverage
 
@@ -43,8 +44,9 @@ Add open-source, actively maintained RDF/TTL/SPARQL lint/validation and security
 
 #### Acceptance Criteria
 
-1. WHEN THE CI Pipeline executes, THE CI Pipeline SHALL validate all Turtle files in the ontology, shapes, mappings, and build directories.
-2. WHEN THE CI Pipeline executes, THE CI Pipeline SHALL parse and analyze all SPARQL query files in the queries directory.
+1. WHEN THE CI Pipeline executes, THE CI Pipeline SHALL validate all Turtle files in ontology directory, shapes directory, mappings directory, and build directory.
+2. WHEN THE CI Pipeline executes, THE CI Pipeline SHALL parse all SPARQL query files in queries directory.
+3. WHEN THE CI Pipeline executes, THE CI Pipeline SHALL analyze all SPARQL query files in queries directory.
 
 ### Requirement 4: Validators and Linters
 
@@ -53,10 +55,11 @@ Add open-source, actively maintained RDF/TTL/SPARQL lint/validation and security
 #### Acceptance Criteria
 
 1. WHEN RIOT detects a validation error in Turtle files, THEN THE CI Pipeline SHALL fail the validation job.
-2. WHEN rdflint detects Fatal or Error level findings, THEN THE CI Pipeline SHALL fail the validation job.
-3. WHEN rdflint detects style-level findings, THEN THE CI Pipeline SHALL report warnings without failing the validation job.
-4. WHEN THE SPARQL Parser detects parse errors, THEN THE CI Pipeline SHALL fail the validation job.
-5. WHEN THE SPARQL Parser detects formatting differences, THEN THE CI Pipeline SHALL report warnings without failing the validation job.
+2. WHEN rdflint detects Fatal level findings, THEN THE CI Pipeline SHALL fail the validation job.
+3. WHEN rdflint detects Error level findings, THEN THE CI Pipeline SHALL fail the validation job.
+4. WHEN rdflint detects style-level findings, THEN THE CI Pipeline SHALL report warnings without failing the validation job.
+5. WHEN THE SPARQL Parser detects parse errors, THEN THE CI Pipeline SHALL fail the validation job.
+6. WHEN THE SPARQL Parser detects formatting differences, THEN THE CI Pipeline SHALL report warnings without failing the validation job.
 
 ### Requirement 5: PR Ergonomics
 
@@ -65,8 +68,8 @@ Add open-source, actively maintained RDF/TTL/SPARQL lint/validation and security
 #### Acceptance Criteria
 
 1. WHEN THE CI Pipeline produces diagnostics, THEN reviewdog SHALL create inline PR annotations.
-2. WHEN THE CI Pipeline detects errors, THEN THE CI Pipeline SHALL report failure status via github-pr-check.
-3. WHEN THE CI Pipeline detects warnings, THEN THE CI Pipeline SHALL report success status via github-pr-check.
+2. WHEN THE CI Pipeline detects errors, THEN THE CI Pipeline SHALL report failure status via github-pr-check reporter.
+3. WHEN THE CI Pipeline detects warnings only, THEN THE CI Pipeline SHALL report success status via github-pr-check reporter.
 
 ### Requirement 6: Security and Compliance
 
@@ -75,8 +78,8 @@ Add open-source, actively maintained RDF/TTL/SPARQL lint/validation and security
 #### Acceptance Criteria
 
 1. WHEN gitleaks detects a secret, THEN THE CI Pipeline SHALL fail the security job.
-2. WHEN pip-audit detects vulnerabilities with CVSS score greater than or equal to 7.0, THEN THE CI Pipeline SHALL fail the security job.
-3. WHERE SBOM scanning is enabled, WHEN THE CI Pipeline detects Critical findings, THEN THE CI Pipeline SHALL fail the security job.
+2. WHEN pip-audit detects vulnerabilities with CVSS score 7.0 or higher, THEN THE CI Pipeline SHALL fail the security job.
+3. WHERE SBOM scanning is enabled, IF THE CI Pipeline detects Critical findings, THEN THE CI Pipeline SHALL fail the security job.
 
 ### Requirement 7: Domain Policy
 
@@ -92,9 +95,9 @@ Add open-source, actively maintained RDF/TTL/SPARQL lint/validation and security
 
 #### Acceptance Criteria
 
-1. WHEN THE CI Pipeline executes GitHub Actions, THE CI Pipeline SHALL use pinned versions for all tools and dependencies.
-2. WHEN THE CI Pipeline executes GitHub Actions, THE CI Pipeline SHALL require no external secrets beyond the GitHub token.
-3. WHEN THE CI Pipeline executes Node tools, THE CI Pipeline SHALL use the --no-fund and --no-audit flags.
+1. THE CI Pipeline SHALL use pinned versions for all tools and dependencies in GitHub Actions.
+2. THE CI Pipeline SHALL require no external secrets beyond GitHub token.
+3. WHEN THE CI Pipeline executes Node tools, THE CI Pipeline SHALL use --no-fund flag and --no-audit flag.
 
 ### Requirement 9: Outputs
 
@@ -103,7 +106,9 @@ Add open-source, actively maintained RDF/TTL/SPARQL lint/validation and security
 #### Acceptance Criteria
 
 1. WHEN THE CI Pipeline completes execution, THE CI Pipeline SHALL display a concise pass or fail summary.
-2. WHEN THE CI Pipeline creates annotations, THE CI Pipeline SHALL include file path, line number, and column number in each annotation.
+2. THE CI Pipeline annotation SHALL include file path in each annotation.
+3. THE CI Pipeline annotation SHALL include line number in each annotation.
+4. THE CI Pipeline annotation SHALL include column number in each annotation.
 
 ### Out of Scope
 - Building SonarQube plugins

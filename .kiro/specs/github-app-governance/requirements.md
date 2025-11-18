@@ -19,9 +19,9 @@ This specification defines the governance automation for managing GitHub App ins
 
 #### Acceptance Criteria
 
-1. WHEN THE Governance System identifies an unapproved GitHub App, THE Governance System SHALL remove the app from the repository.
-2. WHEN THE Governance System removes an app, THE Governance System SHALL record the removal action to the Audit Log with timestamp and app name.
-3. WHERE multiple unapproved apps exist, THE Governance System SHALL process each app independently.
+1. WHEN THE Governance System identifies an unapproved GitHub App, THE Governance System SHALL remove the GitHub App from the repository.
+2. WHEN THE Governance System removes a GitHub App, THE Governance System SHALL record timestamp and app name to the Audit Log.
+3. WHERE multiple unapproved GitHub Apps exist, THE Governance System SHALL process each GitHub App independently.
 
 ### Requirement 2: Deterministic Automation
 
@@ -29,9 +29,10 @@ This specification defines the governance automation for managing GitHub App ins
 
 #### Acceptance Criteria
 
-1. WHEN THE Governance System executes an action, THE Governance System SHALL complete without requiring manual intervention.
-2. WHEN THE Automation Tool is invoked, THE Automation Tool SHALL use Chromium-based browser automation.
-3. WHEN an action completes, THE Governance System SHALL exit with code 0 on success and non-zero on failure.
+1. WHEN THE Governance System executes an action, THE Governance System SHALL complete without manual intervention.
+2. THE Automation Tool SHALL use Chromium-based browser automation.
+3. WHEN an action completes successfully, THE Governance System SHALL exit with code 0.
+4. WHEN an action fails, THE Governance System SHALL exit with non-zero code.
 
 ### Requirement 3: Tool Integration
 
@@ -39,9 +40,9 @@ This specification defines the governance automation for managing GitHub App ins
 
 #### Acceptance Criteria
 
-1. WHEN governance automation is needed, THE Governance System SHALL execute tools from `tools/automation/`.
-2. WHEN THE Automation Tool is invoked, THE Automation Tool SHALL not require global installations.
-3. WHERE automation scripts exist, THE Governance System SHALL maintain them under version control.
+1. WHEN governance automation is needed, THE Governance System SHALL execute tools from tools/automation/ directory.
+2. THE Automation Tool SHALL operate without global package installations.
+3. THE Governance System SHALL maintain automation scripts under version control.
 
 ### Requirement 4: API-First Approach
 
@@ -49,9 +50,9 @@ This specification defines the governance automation for managing GitHub App ins
 
 #### Acceptance Criteria
 
-1. WHEN an action can be performed via GitHub API, THE Governance System SHALL use `gh api` or `gh` CLI commands.
-2. IF GitHub API lacks required capabilities, THEN THE Governance System SHALL fall back to the Automation Tool.
-3. WHEN using the Automation Tool, THE Governance System SHALL document why API approach was insufficient.
+1. WHEN an action can be performed via GitHub API, THE Governance System SHALL use gh api or gh CLI commands.
+2. IF GitHub API lacks required capabilities, THEN THE Governance System SHALL use the Automation Tool.
+3. WHEN the Automation Tool is used, THE Governance System SHALL document the reason API approach was insufficient.
 
 ### Requirement 5: Auditability
 
@@ -60,8 +61,8 @@ This specification defines the governance automation for managing GitHub App ins
 #### Acceptance Criteria
 
 1. WHEN THE Governance System performs an action, THE Governance System SHALL write an entry to the Audit Log.
-2. WHEN an Audit Log entry is created, THE Audit Log SHALL include timestamp, actor, action type, and target app name.
-3. WHEN THE Governance System completes, THE Audit Log SHALL be stored in `build/governance/logs/` with ISO 8601 timestamp in filename.
+2. THE Audit Log entry SHALL include timestamp, actor, action type, and target app name.
+3. WHEN THE Governance System completes, THE Governance System SHALL store the Audit Log in build/governance/logs/ directory with ISO 8601 timestamp in filename.
 
 ### Requirement 6: Operational Safety
 
@@ -69,8 +70,8 @@ This specification defines the governance automation for managing GitHub App ins
 
 #### Acceptance Criteria
 
-1. WHEN THE Governance System is invoked with dry-run flag, THE Governance System SHALL simulate actions without making changes.
-2. WHEN dry-run mode is active, THE Governance System SHALL output what would be done.
-3. WHERE secrets are required, THE Governance System SHALL document required environment variables and permissions.
-4. WHEN documentation is provided, THE Governance System SHALL include examples for common operations.
+1. WHEN THE Governance System is invoked with dry-run flag, THE Governance System SHALL simulate actions without modifying repository state.
+2. WHILE dry-run mode is active, THE Governance System SHALL output planned actions.
+3. WHERE secrets are required, THE Governance System SHALL document required environment variables and required permissions.
+4. THE Governance System SHALL provide documentation with examples for common operations.
 
