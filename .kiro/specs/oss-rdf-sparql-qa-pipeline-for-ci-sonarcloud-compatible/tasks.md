@@ -80,12 +80,13 @@
   - Note that Critical findings will require policy approval before enforcement
   - _Requirements: 6.3_
 
-- [ ] 8. Document CI gates and remediation
+- [x] 8. Document CI gates and remediation
   - Update README with section describing all validation gates
   - Document failure conditions for each gate
   - Provide remediation steps for common validation failures
   - Include examples of RDFLib, SPARQL, gitleaks, and pip-audit errors
   - _Requirements: 9.1, 9.2_
+  - **Status**: Completed — see README “CI Gates (OSS RDF/SPARQL QA)”
 
 - [x] 9. Create local CI runner script
   - Create `tools/ci_local.sh` that mirrors GitHub workflow
@@ -99,21 +100,25 @@
   - _Requirements: 2.2_
 
 - [ ]* 11. Property-based testing
-  - [ ]* 11.1 Write property test for error-level failures
+- [x]* 11.1 Write property test for error-level failures
     - **Property 1: Error-level findings fail the job**
     - **Validates: Requirements 4.1, 4.4, 6.1, 6.2**
+  - **Status**: Implemented — SPARQL parse failures and invalid TTL cause non-zero exits (`tools/qa/*.test.mjs`)
 
-  - [ ]* 11.2 Write property test for warning-level passes
+- [x]* 11.2 Write property test for warning-level passes
     - **Property 2: Warning-level findings pass the job**
     - **Validates: Requirements 4.3, 4.5**
+  - **Status**: Implemented — SPARQL formatting drift warns but passes; enforcement toggles failure
 
-  - [ ]* 11.3 Write property test for file coverage
+- [x]* 11.3 Write property test for file coverage
     - **Property 3: File coverage completeness**
     - **Validates: Requirements 3.1, 3.2**
+  - **Status**: Implemented — validators traverse target directories; nested queries pass
 
-  - [ ]* 11.4 Write property test for annotation completeness
+- [x]* 11.4 Write property test for annotation completeness
     - **Property 4: Annotation completeness**
     - **Validates: Requirements 9.2**
+  - **Status**: Implemented — SPARQL errors include file:line:column format
 
   - [ ]* 11.5 Write property test for performance bounds
     - **Property 5: Performance bounds**

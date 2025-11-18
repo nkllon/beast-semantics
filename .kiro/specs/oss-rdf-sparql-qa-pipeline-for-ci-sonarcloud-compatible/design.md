@@ -20,6 +20,21 @@ Augment CI with OSS validators for RDF/TTL/SPARQL and security gates while keepi
 - SPARQL:
   - `queries/**/*.rq`
 
+## CI Gates
+- RDF syntax validation (RIOT or RDFLib)
+  - Validate TTL/TriG/N-Triples/N-Quads across `ontology/`, `shapes/`, `mappings/`, `build/`
+  - Any parser error is error-level and fails the job (non-zero)
+- RDF lint (rdflint)
+  - Fatal/Error are error-level and fail; style is warning-level (does not fail)
+- SPARQL parsing and formatting
+  - Parse errors are error-level and fail
+  - Formatting drift is warning-level by default; set `ENFORCE_SPQ_FORMAT=true` to elevate to error-level
+- Security and compliance
+  - gitleaks findings fail (with redaction)
+  - pip-audit High/Critical (CVSS ≥ 7.0) fail
+- PR annotations
+  - Findings are reported with file, line, column; warnings do not fail the job
+
 ## CI Workflow Additions (implemented)
 1) Setup runtimes
    - Java via actions/setup-java (Temurin 21)

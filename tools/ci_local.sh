@@ -40,10 +40,16 @@ echo "== Install Python deps =="
 "$PIP" install -r requirements.txt
 
 echo "== RDF validation (RDFLib across ttl/trig/nt/nq) =="
-$PY tools/validate_rdf.py
+echo "(deferred until after assembly/metadata)"
 
 echo "== Assemble ontology =="
 $PY tools/assemble.py
+
+echo "== Generate VoID/DCAT metadata =="
+$PY tools/generate_metadata.py
+
+echo "== RDF validation (post-assembly, includes metadata) =="
+$PY tools/validate_rdf.py
 
 echo "== Validate (pySHACL) =="
 $PY tools/validate.py

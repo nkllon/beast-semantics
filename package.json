@@ -11,7 +11,9 @@
   },
   "scripts": {
     "check:sparql": "node tools/sparql_check.mjs queries",
+    "generate:metadata": "python tools/generate_metadata.py",
     "test:js": "node --test tools/cc-sdd/*.test.mjs",
+    "test:qa": "node --test tools/qa/*.test.mjs",
     "test:publishing": "node --test tools/publishing/*.test.mjs",
     "preflight": "node tools/preflight.mjs --fort-required --require-packages semver fast-check --require-reuse-index 7",
     "reuse:index": "node tools/reuse_index.mjs",
