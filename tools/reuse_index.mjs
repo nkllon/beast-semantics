@@ -19,6 +19,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
+import { resolveFortPath, requireFortPathOrFail } from './resolve_fort_path.mjs';
 
 const DEFAULT_IGNORE_DIRS = new Set(['.git', '.svn', 'node_modules', 'dist', 'build', '.cache', '.idea', '.vscode', '__pycache__']);
 const DEFAULT_EXTS = new Set([
@@ -30,7 +31,7 @@ const DEFAULT_EXTS = new Set([
 ]);
 
 function parseArgs(argv) {
-	let root = process.env.FORT_DESKTOP || '';
+	let root = '';
 	let out = path.join('.kiro', 'reuse', 'index.json');
 	for (let i = 0; i < argv.length; i += 1) {
 		const arg = argv[i];
@@ -42,10 +43,6 @@ function parseArgs(argv) {
 			console.error(`Unknown argument: ${arg}`);
 			process.exit(1);
 		}
-	}
-	if (!root) {
-		console.error('reuse_index: Missing Fort root. Set FORT_DESKTOP or pass --root <path>.');
-		process.exit(1);
 	}
 	return { root: path.resolve(root), out: path.resolve(out) };
 }
@@ -119,7 +116,14 @@ async function ensureDir(dirPath) {
 }
 
 async function main() {
-	const { root, out } = parseArgs(process.argv.slice(2));
+	let { root, out } = parseArgs(process.argv.slice(2));
+	if (!root) {
+		// try durable config/env fallback
+		root = await resolveFortPath();
+		if (!root) {
+			await requireFortPathOrFail(); // exits with guidance
+		}
+	}
 	const docPaths = [];
 	for await (const file of walkFiles(root)) {
 		if (isIndexable(file)) docPaths.push(file);

@@ -132,3 +132,30 @@ Remediation tips:
 - Secrets: remove and rotate any leaked credentials; amend history if needed
 - pip-audit High/Critical: upgrade affected packages; re-run audit
 
+## Reuse Decisioning (Policy + Engine)
+
+Quick local run:
+
+```bash
+# 1) Configure Fort Desktop path (durable options; pick one)
+# 1a) Single-line file (preferred, durable per repo):
+echo "/absolute/path/to/your/fort/desktop" > .kiro/steering-custom/fort.path
+# 1b) Or set an absolute path in .kiro/steering-custom/external-sources.md under "Fort desktop projects"
+# 1c) Or add to your ~/.env (dotenv):
+#    echo 'FORT_DESKTOP=/absolute/path/to/your/fort/desktop' >> ~/.env
+# 1c) Or export for this session:
+# export FORT_DESKTOP="/absolute/path/to/your/fort/desktop"
+
+# 2) Build/update the reuse index (writes .kiro/reuse/index.json)
+npm run reuse:index
+
+# 3) Make a decision with policy at .kiro/steering/policy.reuse.yml
+npm run reuse:decide -- --query "GraphQL gateway service template"
+# Evidence JSON will be written under .kiro/evidence/decision-*.json
+```
+
+Policy file:
+- Path: `.kiro/steering/policy.reuse.yml`
+- Fields: `version`, `owner`, `k`, `alpha`, `tau`, `delta`, `recency_days`, `cve_threshold`, `weights`, `seed`
+- The decision engine loads and enforces these parameters deterministically. If confidence is insufficient or constraints fail, it abstains.
+

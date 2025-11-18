@@ -14,6 +14,7 @@
  */
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { requireFortPathOrFail } from './resolve_fort_path.mjs';
 
 function parseArgs(argv) {
 	const args = { fortRequired: false, requiredPackages: [], requireReuseIndexDays: 0 };
@@ -42,21 +43,7 @@ function parseArgs(argv) {
 
 async function ensureFortPathIfRequired(required) {
 	if (!required) return;
-	const fortPath = process.env.FORT_DESKTOP;
-	if (!fortPath) {
-		console.error('Preflight error: FORT_DESKTOP is required but not set. Record the absolute path in your environment.');
-		process.exit(1);
-	}
-	try {
-		const stat = await fs.stat(fortPath);
-		if (!stat.isDirectory()) {
-			console.error(`Preflight error: FORT_DESKTOP is not a directory: ${fortPath}`);
-			process.exit(1);
-		}
-	} catch (err) {
-		console.error(`Preflight error: FORT_DESKTOP does not exist or is not accessible: ${fortPath}`);
-		process.exit(1);
-	}
+	await requireFortPathOrFail();
 }
 
 async function ensureNodePackages(packages) {
