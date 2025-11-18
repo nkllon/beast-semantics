@@ -57,14 +57,13 @@ jobs:
         run: |
           node tools/sparql_check.mjs queries
 
-      - name: Download Apache Jena (RIOT)
+      - name: Build RIOT Docker image
         run: |
           set -euo pipefail
           JENA_VERSION=4.10.0
-          curl -sSL "https://downloads.apache.org/jena/binaries/apache-jena-${JENA_VERSION}.tar.gz" | tar xz
-          echo "$PWD/apache-jena-${JENA_VERSION}/bin" >> "$GITHUB_PATH"
+          docker build -t riot:$JENA_VERSION -f tools/docker/jena-riot/Dockerfile --build-arg JENA_VERSION=$JENA_VERSION .
 
-      - name: RIOT validate RDF files
+      - name: RIOT validate RDF files (Docker)
         run: |
           set -euo pipefail
           FAIL=0
@@ -74,9 +73,10 @@ jobs:
             echo "No RDF files found in target directories."
             exit 0
           fi
+          JENA_VERSION=4.10.0
           while IFS= read -r f; do
             echo "Validating: $f"
-            if ! riot --validate "$f"; then
+            if ! docker run --rm -v "$PWD:/work" riot:$JENA_VERSION --validate "$f"; then
               FAIL=1
             fi
           done <<EOF
