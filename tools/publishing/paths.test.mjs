@@ -16,7 +16,7 @@ test('Property: Release path structure is /releases/Major.Minor.Patch/', async (
 				([major, minor, patch]) => {
 					const version = `${major}.${minor}.${patch}`;
 					const path = releasePathFromVersion(version);
-					assert.match(path, /^\\/releases\\/(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\/$/, 'path structure must match');
+					assert.match(path, /^\/releases\/(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)\/$/, 'path structure must match');
 				},
 			),
 			{ numRuns: 100 },

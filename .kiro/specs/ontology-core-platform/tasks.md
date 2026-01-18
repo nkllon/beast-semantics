@@ -7,22 +7,22 @@
   - _Requirements: 1.1, 1.2, 1.3, 1.4_
   - **Status**: Implemented via `tools/release_freeze.py` and example at `build/releases/1.2.3/`
 
-- [ ] 1.1 Implement SemVer validation
+- [x] 1.1 Implement SemVer validation
   - Create version parsing and validation functions
   - Support Major.Minor.Patch format
   - Validate version strings before release creation
   - _Requirements: 1.1_
 
-- [ ]* 1.2 Write property test for SemVer format compliance
+- [x]* 1.2 Write property test for SemVer format compliance
   - **Property 1: SemVer format compliance**
   - **Validates: Requirements 1.1**
 
-- [ ] 1.3 Implement release path generation
+- [x] 1.3 Implement release path generation
   - Generate release paths from version strings
   - Ensure path structure consistency
   - _Requirements: 1.2_
 
-- [ ]* 1.4 Write property test for release path structure
+- [x]* 1.4 Write property test for release path structure
   - **Property 2: Release path structure consistency**
   - **Validates: Requirements 1.2**
 
@@ -40,11 +40,11 @@
   - _Requirements: 16.3_
   - **Status**: Implemented in `tools/verify-release.sh`
 
-- [ ]* 2.2 Write property test for manifest integrity
+- [x]* 2.2 Write property test for manifest integrity
   - **Property 9: Manifest integrity**
   - **Validates: Requirements 16.1, 16.2, 16.3**
 
-- [ ] 3. Implement metadata generation
+- [x] 3. Implement metadata generation
   - Generate VoID or DCAT metadata for releases
   - Include git commit hash in provenance
   - Include timestamp in provenance
@@ -52,18 +52,18 @@
   - Include CITATION.cff file
   - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5_
 
-- [ ]* 3.1 Write property test for metadata completeness
+- [x]* 3.1 Write property test for metadata completeness
   - **Property 3: Release metadata completeness**
   - **Validates: Requirements 3.1, 3.2, 3.3, 3.4, 3.5**
 
-- [ ] 4. Implement configuration schema
+- [x] 4. Implement configuration schema
   - Define standard environment variables
   - Create configuration parser and validator
   - Support all required variables: SPARQL_ENDPOINT, SPARQL_UPDATE_ENDPOINT, DATASET_ID, GATEWAY_URL, AUTH_MODE, AUTH_TOKEN_HEADER, CACHE_TTL_S, CACHE_BYPASS_HEADER
   - Create `.env.sample` with documentation
   - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.7, 4.8_
 
-- [ ]* 4.1 Write property test for configuration schema completeness
+- [x]* 4.1 Write property test for configuration schema completeness
   - **Property 4: Configuration schema completeness**
   - **Validates: Requirements 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.7, 4.8**
 

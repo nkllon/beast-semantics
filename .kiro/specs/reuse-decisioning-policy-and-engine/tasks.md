@@ -1,12 +1,12 @@
 # Tasks
 
 ## Phase 1 — Core Retrieval, Policy, and Decision
-- [ ] 1. Add policy file
+- [x] 1. Add policy file
   - Create `.kiro/steering/policy.reuse.yml` with defaults: k, α, τ, Δ, recency_days, cve_threshold, weights w, seed
 - [x] 2. Enhance lexical indexer
   - Support configurable include/exclude globs, chunk sizing, and reproducible ordering in `tools/reuse_index.mjs`
   - **Status**: Implemented in `tools/reuse_index.mjs`
-- [ ] 3. Add hybrid retrieval
+- [x] 3. Add hybrid retrieval
   - Add s_hyb to evidence paths; expose α and k via CLI flags and policy
 - [ ] 4. Metadata extraction
   - Implement extractor (LLM-assisted optional) that outputs strict JSON: {license, recency_days, cves[], stars, downloads, language, api_fit_bool} with citations

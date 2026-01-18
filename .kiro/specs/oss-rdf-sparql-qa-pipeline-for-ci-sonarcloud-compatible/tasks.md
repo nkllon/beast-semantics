@@ -24,7 +24,7 @@
   - Configure job to fail on Fatal or Error level findings
   - Allow style-level findings to pass as warnings
   - _Requirements: 3.1, 4.2, 4.3_
-  - **Status**: Not implemented in current workflow; RDFLib provides core validation
+  - **Status**: Script `tools/rdflint.sh` added; CI wiring pending
 
 - [x] 3. Implement security scanning gates
 - [x] 3.1 Add secrets scanning with gitleaks
@@ -79,6 +79,7 @@
   - Document Trivy or Grype integration options
   - Note that Critical findings will require policy approval before enforcement
   - _Requirements: 6.3_
+  - **Status**: Documented in README (SBOM: CycloneDX); CI wiring pending
 
 - [x] 8. Document CI gates and remediation
   - Update README with section describing all validation gates
@@ -133,5 +134,5 @@
     - Verify all properties hold across random inputs
     - Fix any discovered edge cases
 
-- [ ] 12. Checkpoint - Ensure all tests pass
+- [x] 12. Checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.

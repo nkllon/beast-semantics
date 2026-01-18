@@ -13,27 +13,29 @@ function parseArgs(argv) {
 	let query = '';
 	let k = undefined;
 	let outPath = path.join('.kiro', 'evidence', `decision-${Date.now()}.json`);
+	let alpha = undefined;
 	for (let i = 0; i < argv.length; i += 1) {
 		const arg = argv[i];
 		if (arg === '--index') indexPath = argv[++i] || indexPath;
 		else if (arg === '--query') query = argv[++i] || '';
 		else if (arg === '--k') k = parseInt(argv[++i] || '', 10);
 		else if (arg === '--out') outPath = argv[++i] || outPath;
+		else if (arg === '--alpha') alpha = Number(argv[++i] || 'NaN');
 		else {
 			console.error(`Unknown argument: ${arg}`);
 			process.exit(2);
 		}
 	}
-	return { indexPath: path.resolve(indexPath), query, k, outPath: path.resolve(outPath) };
+	return { indexPath: path.resolve(indexPath), query, k, outPath: path.resolve(outPath), alpha };
 }
 
 async function main() {
-	const { indexPath, query, k, outPath } = parseArgs(process.argv.slice(2));
+	const { indexPath, query, k, outPath, alpha } = parseArgs(process.argv.slice(2));
 	if (!query) {
 		console.error('reuse_evidence: Missing --query "<text>"');
 		process.exit(1);
 	}
-	const evidence = await runDecision({ indexPath, query, k, outPath });
+	const evidence = await runDecision({ indexPath, query, k, outPath, alpha });
 	console.log(`${evidence.decision} ${outPath}`);
 }
 

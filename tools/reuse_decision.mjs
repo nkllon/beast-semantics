@@ -8,14 +8,15 @@ import path from 'node:path';
 import os from 'node:os';
 import { loadPolicy } from './reuse_policy.mjs';
 
-export async function runDecision({ indexPath, query, k, outPath }) {
+export async function runDecision({ indexPath, query, k, outPath, alpha }) {
 	const index = await loadIndex(indexPath);
 	const { policy } = await loadPolicy();
 	const kEff = Math.max(1, Number.isFinite(k) ? k : policy.k);
+	const alphaEff = Number.isFinite(alpha) ? Math.max(0, Math.min(1, alpha)) : policy.alpha;
 	const retrieval = lexicalRetrieval(index, query, kEff);
 	const hits = retrieval.map((r) => {
 		const s_den = 0; // dense disabled (offline default)
-		const s_hyb = policy.alpha * r.s_lex + (1 - policy.alpha) * s_den;
+		const s_hyb = alphaEff * r.s_lex + (1 - alphaEff) * s_den;
 		return { path: r.path, s_lex: r.s_lex, s_den, s_hyb };
 	});
 	hits.sort((a, b) => b.s_hyb - a.s_hyb);
@@ -42,7 +43,7 @@ export async function runDecision({ indexPath, query, k, outPath }) {
 		policy_version: policy.version,
 		policy_owner: policy.owner,
 		k: kEff,
-		alpha: policy.alpha,
+		alpha: alphaEff,
 		tau: policy.tau,
 		delta: policy.delta,
 		weights: policy.weights,

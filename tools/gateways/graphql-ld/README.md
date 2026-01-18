@@ -1,3 +1,27 @@
+# GraphQL-LD Minimal Example
+
+This minimal example provides:
+- A Node.js server exposing:
+  - `GET /health` → `{ ok: true, node: "vX.Y.Z" }`
+  - `GET /context` → JSON-LD context from `context.json`
+
+Requirements:
+- Node.js 18+ (uses fetch and Web APIs)
+
+Run:
+```bash
+node tools/gateways/graphql-ld/server.mjs
+# The server prints: Listening on <port>
+```
+
+Environment:
+- `PORT` (optional): bind port. Defaults to 0 (random available).
+
+Testing:
+```bash
+node --test tools/gateways/graphql-ld/server_example.test.mjs
+```
+
 # GraphQL‑LD with Comunica (example)
 
 GraphQL‑LD executes GraphQL‑like queries by translating them with a JSON‑LD context into SPARQL and running them via a Comunica query engine against your SPARQL endpoint.

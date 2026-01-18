@@ -7,7 +7,7 @@
   - Ensure all formats are semantically equivalent
   - _Requirements: 3.1, 3.2, 3.3, 3.4_
 
-- [ ]* 1.1 Write property test for multiple format completeness
+- [x]* 1.1 Write property test for multiple format completeness
   - **Property 6: Multiple format completeness**
   - **Validates: Requirements 3.1, 3.2, 3.3, 3.4**
 
@@ -59,11 +59,12 @@
   - _Requirements: 2.1, 2.2, 2.3_
   - **Partial**: Path utilities exist in `tools/publishing/paths.mjs` with tests
 
-- [ ]* 5.1 Write property test for versioned path structure
+- [x]* 5.1 Write property test for versioned path structure
   - **Property 4: Versioned path structure**
   - **Validates: Requirements 2.1**
+  - **Status**: Implemented — see `tools/publishing/paths.test.mjs`
 
-- [ ]* 5.2 Write property test for release immutability
+- [x]* 5.2 Write property test for release immutability
   - **Property 5: Release immutability**
   - **Validates: Requirements 2.3**
 

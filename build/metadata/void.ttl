@@ -7,8 +7,8 @@
 <urn:sha256:23e74a22fa3b0a1b7acbdff576a8448436386778415368759ace3c55d28983ec> a void:Dataset,
         dcat:Dataset ;
     dcterms:description "Unified ontology and data graph assembled from repo modules." ;
-    dcterms:hasVersion "34c2cb8d716e107d045efc10d2c064c28cdcde57" ;
-    dcterms:issued "2025-11-18T08:10:12+00:00"^^xsd:dateTime ;
+    dcterms:hasVersion "f0f8bfeae59d171b02d269d53251911e0357657c" ;
+    dcterms:issued "2025-11-18T12:42:46+00:00"^^xsd:dateTime ;
     dcterms:title "Assembled ontology dataset" ;
     void:classes 27 ;
     void:entities 77 ;
@@ -18,5 +18,5 @@
         prov:,
         <https://ns.nkllon.com/words/v1/> ;
     prov:wasGeneratedBy [ a prov:Activity ;
-            prov:startedAtTime "2025-11-18T08:10:12+00:00"^^xsd:dateTime ] .
+            prov:startedAtTime "2025-11-18T12:42:46+00:00"^^xsd:dateTime ] .
 

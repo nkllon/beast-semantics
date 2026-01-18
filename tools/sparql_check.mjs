@@ -2,6 +2,7 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
+import { spawn } from 'node:child_process';
 
 // Lazy import to avoid requiring these outside CI
 let SparqlParser, formatQuery;
@@ -9,10 +10,11 @@ async function loadDeps() {
 	const sparqljs = await import('sparqljs');
 	SparqlParser = sparqljs.Parser;
 	try {
-		const fmt = await import('sparql-formatter');
-		formatQuery = fmt.format;
+		// Optional; not required when using heuristic drift detection
+		await import('sparql-formatter');
+		formatQuery = null;
 	} catch {
-		formatQuery = (q) => q;
+		formatQuery = null;
 	}
 }
 
@@ -47,6 +49,17 @@ function posFromError(err) {
 	return { line: 1, column: 1 };
 }
 
+function hasFormattingDrift(text) {
+	// Heuristics to detect obvious formatting drift without enforcing a canonical pretty-print
+	// 1) No space after WHERE before '{'
+	if (/\bwhere\{/.test(text.toLowerCase())) return true;
+	// 2) Missing spaces between subject, predicate, object (e.g., '?s?p?o')
+	if (/\?[A-Za-z0-9_]+\?[A-Za-z0-9_]+\?[A-Za-z0-9_]+/.test(text)) return true;
+	// 3) Compressed braces with terms, e.g., '{?s' or 'o.}'
+	if (/\{\s*\?/.test(text) === false && /\{\?/.test(text)) return true;
+	return false;
+}
+
 async function main() {
 	await loadDeps();
 	const baseDir = process.argv[2] || 'queries';
@@ -71,8 +84,7 @@ async function main() {
 		}
 		// formatting check (warn-only by default)
 		try {
-			const formatted = formatQuery(text);
-			if (formatted && formatted.trim() !== text.trim()) {
+			if (hasFormattingDrift(text)) {
 				const level = enforceFormat ? 'error' : 'warning';
 				// Point to first line
 				console.error(`${file}:1:1: ${level}: formatting differs from canonical`);

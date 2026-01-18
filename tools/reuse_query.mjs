@@ -13,6 +13,7 @@ function parseArgs(argv) {
 	let indexPath = path.join('.kiro', 'reuse', 'index.json');
 	let query = '';
 	let k = 10;
+	let alpha = undefined;
 	for (let i = 0; i < argv.length; i += 1) {
 		const arg = argv[i];
 		if (arg === '--index') {
@@ -21,6 +22,8 @@ function parseArgs(argv) {
 			query = argv[++i] || '';
 		} else if (arg === '--k') {
 			k = parseInt(argv[++i] || '10', 10);
+		} else if (arg === '--alpha') {
+			alpha = Number(argv[++i] || 'NaN');
 		} else {
 			console.error(`Unknown argument: ${arg}`);
 			process.exit(1);
@@ -30,7 +33,7 @@ function parseArgs(argv) {
 		console.error('reuse_query: Missing --query "<text>"');
 		process.exit(1);
 	}
-	return { indexPath: path.resolve(indexPath), query, k };
+	return { indexPath: path.resolve(indexPath), query, k, alpha };
 }
 
 function tokenize(text) {
@@ -69,10 +72,11 @@ function cosineSparse(vecA, vecB) {
 }
 
 async function main() {
-	const { indexPath, query, k } = parseArgs(process.argv.slice(2));
+	const { indexPath, query, k, alpha } = parseArgs(process.argv.slice(2));
 	const raw = await fs.readFile(indexPath, 'utf8');
 	const index = JSON.parse(raw);
 	const { policy } = await loadPolicy();
+	const alphaEff = Number.isFinite(alpha) ? Math.max(0, Math.min(1, alpha)) : policy.alpha;
 	const idf = new Map(Object.entries(index.idf));
 	const queryVec = vectorFromTokens(tokenize(query), idf);
 	const results = [];
@@ -81,7 +85,7 @@ async function main() {
 		const score = cosineSparse(queryVec, docVec);
 		const s_lex = score;
 		const s_den = 0; // dense disabled (offline default)
-		const s_hyb = policy.alpha * s_lex + (1 - policy.alpha) * s_den;
+		const s_hyb = alphaEff * s_lex + (1 - alphaEff) * s_den;
 		results.push({ path: doc.path, s_lex, s_den, s_hyb });
 	}
 	results.sort((a, b) => b.s_hyb - a.s_hyb);

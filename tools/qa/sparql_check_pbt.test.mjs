@@ -31,12 +31,12 @@ function runSparqlCheck(baseDir, env = {}) {
 }
 
 function makeInvalidQuery(seed) {
-  // Start from a valid shape and remove a closing brace or a dot randomly using seed bits
+  // Start from a valid shape and remove the closing brace to ensure invalid query deterministically
   const varS = `?s${seed % 7}`;
   const varP = `?p${(seed >> 3) % 7}`;
   const varO = `?o${(seed >> 6) % 7}`;
   const base = `SELECT * WHERE { ${varS} ${varP} ${varO} . }`;
-  return Math.random() > 0.5 ? base.replace('}', '') : base.replace('.', '');
+  return base.replace('}', '');
 }
 
 function makeFormatDriftQuery(seed) {

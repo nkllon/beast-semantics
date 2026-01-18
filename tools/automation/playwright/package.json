@@ -1,0 +1,19 @@
+{
+  "name": "governance-automation",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p .",
+    "test": "npx --yes @playwright/test test",
+    "start": "ts-node src/cli.ts",
+    "codegen": "npx --yes playwright codegen"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  }
+}
+
+

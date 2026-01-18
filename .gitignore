@@ -75,3 +75,8 @@ tools/bin/
 # Release artifacts (generated)
 /build/releases/
 
+
+# System and IDE exclusions
+**/.DS_Store
+Thumbs.db
+*.pyc

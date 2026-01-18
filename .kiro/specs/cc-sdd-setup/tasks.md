@@ -77,7 +77,7 @@
     - Confirm troubleshooting guidance is clear
     - _Requirements: R1.1, R3.1, R4.4_
 
-- [ ]* 5. Property-based testing
+- [x]* 5. Property-based testing
   - [x]* 5.1 Write property test for complete file verification
     - **Property 1: Complete file verification**
     - **Validates: Requirements 2.1, 2.4**

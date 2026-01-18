@@ -36,13 +36,14 @@ jobs:
         run: |
           npm --version
           npm install --global --no-fund --no-audit sparqljs sparql-formatter
-      - name: Install Apache Jena (RIOT)
+      - name: Use vendored Apache Jena (RIOT)
         run: |
           set -euo pipefail
-          JENA_VERSION="4.10.0"
-          curl -sSL "https://downloads.apache.org/jena/binaries/apache-jena-${JENA_VERSION}.tar.gz" -o jena.tar.gz
-          tar -xzf jena.tar.gz
-          echo "${{ github.workspace }}/apache-jena-${JENA_VERSION}/bin" >> $GITHUB_PATH
+          if [ ! -x "./apache-jena-4.10.0/bin/riot" ]; then
+            echo "Vendored Jena RIOT not found at ./apache-jena-4.10.0/bin/riot" >&2
+            exit 1
+          fi
+          echo "${{ github.workspace }}/apache-jena-4.10.0/bin" >> "$GITHUB_PATH"
       - name: RDF Validation (RIOT)
         run: |
           set -euo pipefail

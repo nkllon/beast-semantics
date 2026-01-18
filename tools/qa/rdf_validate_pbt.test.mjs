@@ -3,10 +3,18 @@ import assert from 'node:assert/strict';
 import os from 'node:os';
 import path from 'node:path';
 import fs from 'node:fs/promises';
-import { execFile } from 'node:child_process';
+import { execFile, execFileSync } from 'node:child_process';
 
 const repoRoot = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..', '..');
 const validateScript = path.join(repoRoot, 'tools', 'validate_rdf.py');
+
+async function hasRdflib() {
+  return new Promise(resolve => {
+    execFile('python3', ['-c', 'import rdflib'], { timeout: 5000 }, (error) => {
+      resolve(!error);
+    });
+  });
+}
 
 async function mkTemp(prefix = 'pbt-rdf-') {
   return await fs.mkdtemp(path.join(os.tmpdir(), prefix));
@@ -29,7 +37,11 @@ function runValidate(cwd) {
   });
 }
 
-test('Property: Valid TTL passes; invalid TTL fails', async () => {
+test('Property: Valid TTL passes; invalid TTL fails', async (t) => {
+  if (!(await hasRdflib())) {
+    t.skip('rdflib not installed; skipping RDF validation property tests');
+    return;
+  }
   {
     const tmp = await mkTemp();
     const f = path.join(tmp, 'ontology', 'ok.ttl');
@@ -55,7 +67,11 @@ test('Property: Valid TTL passes; invalid TTL fails', async () => {
   }
 });
 
-test('Property: No RDF files found returns success with informative message', async () => {
+test('Property: No RDF files found returns success with informative message', async (t) => {
+  if (!(await hasRdflib())) {
+    t.skip('rdflib not installed; skipping RDF validation property tests');
+    return;
+  }
   const tmp = await mkTemp();
   const res = await runValidate(tmp);
   assert.equal(res.code, 0);

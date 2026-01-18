@@ -1,12 +1,12 @@
 # Implementation Plan
 
-- [ ] 1. Set up RDF store infrastructure
+- [x] 1. Set up RDF store infrastructure
   - Deploy Apache Jena Fuseki with TDB2 storage as default
   - Configure read-only dataset mode
   - Support GraphDB as alternative (where licensed)
   - _Requirements: 1.1, 1.2_
 
-- [ ] 2. Deploy GraphQL gateway
+- [x] 2. Deploy GraphQL gateway
   - Deploy HyperGraphQL or GraphQL-LD gateway
   - Configure SPARQL endpoint connection
   - Implement query translation
