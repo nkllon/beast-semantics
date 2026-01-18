@@ -1,0 +1,115 @@
+{
+  "version": 1,
+  "created_at": "2025-11-18T07:24:11.310Z",
+  "host": "herbert.local",
+  "corpus_root": "/Volumes/lemon/cursor/beast-semantics",
+  "index_created_at": "2025-11-18T07:22:01.992Z",
+  "index_version": 1,
+  "policy_version": "0.1.0",
+  "policy_owner": "reuse@policy",
+  "k": 10,
+  "alpha": 1,
+  "tau": 0.65,
+  "delta": 0.1,
+  "weights": {
+    "phi_lex1": 0.6,
+    "phi_gap": 0.2,
+    "phi_recency": 0.1,
+    "phi_osi": 0.08,
+    "phi_popularity": 0.02,
+    "phi_cve_penalty": -0.5
+  },
+  "query_raw": "multi-perspective agent analysis",
+  "retrieval": [
+    {
+      "path": "tools/vendor/cc-sdd/templates/manifests/claude-code-agent.json",
+      "s_lex": 0.26693317184567383,
+      "s_den": 0,
+      "s_hyb": 0.26693317184567383
+    },
+    {
+      "path": "queries/agent_perspective_counts.rq",
+      "s_lex": 0.2578544548049855,
+      "s_den": 0,
+      "s_hyb": 0.2578544548049855
+    },
+    {
+      "path": "tools/vendor/cc-sdd/templates/agents/github-copilot/commands/kiro-validate-gap.prompt.md",
+      "s_lex": 0.22329286690061234,
+      "s_den": 0,
+      "s_hyb": 0.22329286690061234
+    },
+    {
+      "path": "tools/vendor/cc-sdd/templates/agents/claude-code-agent/agents/validate-gap.md",
+      "s_lex": 0.21856861706554429,
+      "s_den": 0,
+      "s_hyb": 0.21856861706554429
+    },
+    {
+      "path": "tools/vendor/cc-sdd/templates/agents/cursor/commands/validate-gap.md",
+      "s_lex": 0.21843726553194778,
+      "s_den": 0,
+      "s_hyb": 0.21843726553194778
+    },
+    {
+      "path": "tools/vendor/cc-sdd/templates/agents/codex/commands/kiro-validate-gap.md",
+      "s_lex": 0.2172040447805711,
+      "s_den": 0,
+      "s_hyb": 0.2172040447805711
+    },
+    {
+      "path": ".cursor/commands/kiro/validate-gap.md",
+      "s_lex": 0.21718335586702717,
+      "s_den": 0,
+      "s_hyb": 0.21718335586702717
+    },
+    {
+      "path": "tools/vendor/cc-sdd/templates/agents/claude-code/commands/validate-gap.md",
+      "s_lex": 0.2162518343641471,
+      "s_den": 0,
+      "s_hyb": 0.2162518343641471
+    },
+    {
+      "path": "tools/vendor/cc-sdd/templates/agents/windsurf/commands/kiro-validate-gap.md",
+      "s_lex": 0.2117691518191841,
+      "s_den": 0,
+      "s_hyb": 0.2117691518191841
+    },
+    {
+      "path": "tools/vendor/cc-sdd/templates/manifests/cursor.json",
+      "s_lex": 0.20622467663568764,
+      "s_den": 0,
+      "s_hyb": 0.20622467663568764
+    }
+  ],
+  "metadata": {
+    "license": null,
+    "recency_days": 0,
+    "cves": [],
+    "stars": null,
+    "downloads": null,
+    "language": null,
+    "api_fit_bool": null,
+    "citations": [
+      "tools/vendor/cc-sdd/templates/manifests/claude-code-agent.json"
+    ]
+  },
+  "features": {
+    "phi_lex1": 0.26693317184567383,
+    "phi_gap": 0.009078717040688355,
+    "phi_recency": 1,
+    "phi_osi": 0,
+    "phi_popularity": 0,
+    "phi_cve_penalty": 0
+  },
+  "constraints": {
+    "pass": false,
+    "c_osi": false,
+    "c_cve": true,
+    "c_recency": true
+  },
+  "score": 0.261976,
+  "margin": 0.000351,
+  "decision": "Abstain",
+  "seed": 12345
+}

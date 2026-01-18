@@ -1,0 +1,35 @@
+version: "3.9"
+services:
+  fuseki:
+    image: stain/jena-fuseki:latest
+    ports:
+      - "3030:3030"
+    environment:
+      - FUSEKI_DATASET=dataset
+      - FUSEKI_ARGS=--mem /dataset
+  hypergraphql:
+    image: docker.io/hypergraphql/hypergraphql:1.2.4
+    depends_on:
+      - fuseki
+    environment:
+      - SPARQL_ENDPOINT=http://fuseki:3030/dataset/sparql
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./gateways/hypergraphql:/config:ro
+    command: ["-c", "/config/config.json"]
+
+  playwright-mcp:
+    build:
+      context: ./playwright-mcp
+      dockerfile: Dockerfile
+    image: local/playwright-mcp:latest
+    working_dir: /work
+    volumes:
+      - ../..:/work
+      - ./artifacts:/artifacts
+    environment:
+      - PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+    entrypoint: ["npx","--yes","@playwright/mcp"]
+
+

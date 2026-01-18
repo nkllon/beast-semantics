@@ -1,0 +1,15 @@
+{
+  "name": "lemon-kg",
+  "schema": "schema.graphql",
+  "enrich": false,
+  "timeout": 30000,
+  "services": [
+    {
+      "id": "sparql",
+      "type": "SPARQL",
+      "url": "${SPARQL_ENDPOINT}"
+    }
+  ]
+}
+
+

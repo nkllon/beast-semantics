@@ -1,0 +1,28 @@
+{
+  "feature_name": "ontology-runtime-queries",
+  "created_at": "2025-11-18T00:00:00Z",
+  "updated_at": "2025-11-18T05:58:50.608Z",
+  "language": "en",
+  "phase": "implementation",
+  "approvals": {
+    "requirements": {
+      "generated": true,
+      "approved": true
+    },
+    "design": {
+      "generated": true,
+      "approved": true
+    },
+    "tasks": {
+      "generated": true,
+      "approved": true
+    }
+  },
+  "ready_for_implementation": true,
+  "id": "4420e5a7-5345-4ef4-84ba-1fe831777151",
+  "owner": "lou@louspringer.com",
+  "hash": {
+    "algorithm": "sha256",
+    "value": "77c83818f5b5ffefc3f1c9d049c2fb9a495690d8b427f0f86b5b7e90233399a7"
+  }
+}

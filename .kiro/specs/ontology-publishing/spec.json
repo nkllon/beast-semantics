@@ -1,0 +1,28 @@
+{
+  "feature_name": "ontology-publishing",
+  "created_at": "2025-11-18T00:00:00Z",
+  "updated_at": "2025-11-18T05:58:49.704Z",
+  "language": "en",
+  "phase": "implementation",
+  "approvals": {
+    "requirements": {
+      "generated": true,
+      "approved": true
+    },
+    "design": {
+      "generated": true,
+      "approved": true
+    },
+    "tasks": {
+      "generated": true,
+      "approved": true
+    }
+  },
+  "ready_for_implementation": true,
+  "id": "f23d2138-fad3-4c85-822f-f746a7351a6f",
+  "owner": "lou@louspringer.com",
+  "hash": {
+    "algorithm": "sha256",
+    "value": "5ee17904dbffccd149fec6a276ccfcc7c47c484684358e7592429dfb5f2ddf25"
+  }
+}

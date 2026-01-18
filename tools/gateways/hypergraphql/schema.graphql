@@ -1,0 +1,19 @@
+schema {
+  query: Query
+}
+
+directive @service(id: String!) on FIELD_DEFINITION | OBJECT | INTERFACE
+directive @iri on FIELD_DEFINITION
+directive @facet(predicate: String!) on FIELD_DEFINITION
+
+type Thing @service(id: "sparql") {
+  id: ID @iri
+  label: [String] @facet(predicate: "http://www.w3.org/2000/01/rdf-schema#label")
+}
+
+type Query {
+  thing(id: ID!): Thing @service(id: "sparql")
+  things(limit: Int = 10, offset: Int = 0): [Thing] @service(id: "sparql")
+}
+
+

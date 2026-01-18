@@ -1,0 +1,28 @@
+{
+  "feature_name": "ontology-core-platform",
+  "created_at": "2025-11-18T00:00:00Z",
+  "updated_at": "2025-11-18T05:58:49.101Z",
+  "language": "en",
+  "phase": "implementation",
+  "approvals": {
+    "requirements": {
+      "generated": true,
+      "approved": true
+    },
+    "design": {
+      "generated": true,
+      "approved": true
+    },
+    "tasks": {
+      "generated": true,
+      "approved": true
+    }
+  },
+  "ready_for_implementation": true,
+  "id": "1a5f1d61-148b-4e0d-b280-d90f15b8b24d",
+  "owner": "lou@louspringer.com",
+  "hash": {
+    "algorithm": "sha256",
+    "value": "3c056398f1cb542be5a778f6cb246507e26192af035152efc575c861a6735fea"
+  }
+}

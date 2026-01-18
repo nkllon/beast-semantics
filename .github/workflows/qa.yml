@@ -1,0 +1,200 @@
+name: OSS RDF/SPARQL QA
+
+on:
+  pull_request:
+    paths:
+      - "**/*.ttl"
+      - "**/*.trig"
+      - "**/*.nt"
+      - "**/*.nq"
+      - "queries/**/*.rq"
+      - "tools/**"
+      - ".github/workflows/**"
+  push:
+    branches: [ "main" ]
+    paths:
+      - "**/*.ttl"
+      - "**/*.trig"
+      - "**/*.nt"
+      - "**/*.nq"
+      - "queries/**/*.rq"
+      - "tools/**"
+      - ".github/workflows/**"
+
+permissions:
+  contents: read
+
+env:
+  # Optional: set to 'true' to enforce SPARQL formatting as errors
+  # ENFORCE_SPQ_FORMAT: "false"
+
+jobs:
+  validate:
+    name: Validate RDF, SPARQL, and Security
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+
+      - name: Setup Java (Temurin 21)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Setup Node.js (20.x)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+      
+      - name: Install Node dependencies
+        run: |
+          npm ci --no-fund --no-audit
+
+      - name: SPARQL validation (parse + format)
+        run: |
+          node tools/sparql_check.mjs queries
+      
+      - name: RDF validation (Apache Jena RIOT)
+        run: |
+          set -euo pipefail
+          if [ ! -x "./apache-jena-4.10.0/bin/riot" ]; then
+            echo "Jena RIOT not found at apache-jena-4.10.0/bin/riot"; exit 1
+          fi
+          # Validate common RDF serializations in key directories
+          found=false
+          while IFS= read -r -d '' f; do
+            found=true
+            ./apache-jena-4.10.0/bin/riot --validate "$f"
+          done < <(find ontology shapes mappings build -type f \( -name '*.ttl' -o -name '*.trig' -o -name '*.nt' -o -name '*.nq' \) -print0 2>/dev/null || true)
+          if [ "${found}" = "false" ]; then
+            echo "No RDF files found under ontology/, shapes/, mappings/, or build/."
+          fi
+      
+      - name: Install rdflint
+        run: |
+          set -euo pipefail
+          curl -sSL -o rdflint-all.jar https://github.com/imas/rdflint/releases/download/v1.1.13/rdflint-all.jar
+          java -jar rdflint-all.jar --version
+      
+      - name: RDF lint (rdflint)
+        run: |
+          set -euo pipefail
+          # Run with defaults; Fatal/Error cause non-zero exit; style warnings do not fail
+          java -jar rdflint-all.jar
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: RDF validation (RDFLib)
+        run: |
+          set -euo pipefail
+          python tools/validate_rdf.py
+
+
+      - name: Secrets scanning (gitleaks)
+        uses: gitleaks/gitleaks-action@v2
+        with:
+          args: --redact
+
+      - name: Install pip-audit
+        run: |
+          python -m pip install --upgrade pip
+          pip install "pip-audit==2.7.3"
+
+      - name: pip-audit (fail on CVSS >= 7.0)
+        run: |
+          set -euo pipefail
+          # Run pip-audit; capture JSON; filter by CVSS threshold
+          pip-audit -r requirements.txt -f json -o audit.json || true
+          python - << 'PY'
+          import json, sys
+          try:
+              data = json.load(open('audit.json'))
+          except Exception:
+              print('No audit.json or invalid JSON; failing to be safe.')
+              sys.exit(1)
+          def score(v):
+              sev = v.get('severity', {})
+              s = sev.get('score')
+              try:
+                  return float(s)
+              except Exception:
+                  return 0.0
+          highs = []
+          for dep in data:
+              for v in dep.get('vulns', []):
+                  if score(v) >= 7.0:
+                      highs.append(v)
+          if highs:
+              print(f"High/Critical vulnerabilities found: {len(highs)} (CVSS >= 7.0)")
+              sys.exit(1)
+          print("No High/Critical vulnerabilities (CVSS >= 7.0).")
+          PY
+
+      - name: Domain metrics (baseline comparison)
+        run: |
+          set -euo pipefail
+          # Fetch baseline and create a temporary worktree for origin/main
+          git fetch --no-tags --depth=1 origin +refs/heads/main:refs/remotes/origin/main || true
+          if git rev-parse --verify origin/main >/dev/null 2>&1; then
+            git worktree add -f ../baseline origin/main
+            BASE_DIR="../baseline"
+          else
+            echo "Baseline origin/main not available; skipping comparison."
+            BASE_DIR=""
+          fi
+          python - << 'PY'
+          import os, sys
+          sys.path.insert(0, 'tools')
+          try:
+              from metrics_diversity import shannon_index
+          except Exception:
+              print('metrics_diversity.py not available; skipping.')
+              raise SystemExit(0)
+          def shannon_for(dir_path):
+              labels = []
+              qdir = os.path.join(dir_path, 'queries')
+              if not os.path.isdir(qdir):
+                  return 0.0
+              for root, _, files in os.walk(qdir):
+                  for f in files:
+                      if f.endswith('.rq'):
+                          labels.append(f.split('_')[0])
+              return shannon_index(labels)
+          cur = shannon_for('.')
+          base_dir = os.environ.get('BASE_DIR', '')
+          base = shannon_for(base_dir) if base_dir else cur
+          delta = cur - base
+          print(f"Shannon diversity current={cur:.4f} baseline={base:.4f} delta={delta:.4f}")
+          # Fail on regression beyond a small tolerance
+          if delta < -0.01:
+              print("Diversity regression detected (delta < -0.01)")
+              sys.exit(1)
+          PY
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "## QA Summary";
+            echo "";
+            echo "- SPARQL parse/format: completed";
+            echo "- RDFLib RDF validation: completed";
+            echo "- gitleaks: completed";
+            echo "- pip-audit (CVSS >= 7.0 fails): completed";
+            echo "- Domain metrics baseline compare: completed";
+            echo "";
+            echo "_Set ENFORCE_SPQ_FORMAT=true to enforce SPARQL formatting as errors._";
+          } >> "$GITHUB_STEP_SUMMARY"
+
+
